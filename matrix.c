@@ -95,7 +95,7 @@ void getMatrixDimensions(Matrix mat, int *rows, int *cols) {
 }
 
 // Set a specific element in the matrix
-// Accepts a matrix, a column int, a row int, and a matrix element
+// Accepts a matrix pointer, a column int, a row int, and a matrix element
 // Returns void
 void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
     // Check if the row and column indices are within the bounds of the matrix
@@ -140,6 +140,56 @@ MatrixElement getMatrixElement(Matrix mat, int row, int col) {
     return mat.data[row][col];
 }
 
+// Get a row or column in the matrix
+// Accepts a matrix pointer, and a Row Or Column enum, along with an index
+// Returns a MatrixElement pointer
+MatrixElement* getRowOrColumn(Matrix *mat, RowOrCol roc, int index) {
+    // Check if the index is out of bounds
+    if ((roc == ROW && (index < 0 || index >= mat->rows)) || 
+        (roc == COL && (index < 0 || index >= mat->cols))) {
+        printf("Error: Index out of bounds\n");
+        return NULL; // Return NULL to indicate an error
+    }
+
+    // Allocate memory for the row or column 
+    MatrixElement *result = NULL;
+
+    // Get a row
+    if (roc == ROW) {
+        // Get a row
+        // Allocate memory for the row based on the number of columns
+        result = (MatrixElement *)malloc(mat->cols * sizeof(MatrixElement));
+
+        // Catch errors with memory allocation
+        if (!result) {
+            printf("Memory allocation failed\n");
+            return NULL;
+        }
+
+        // Put the data into the memory location
+        for (int i = 0; i < mat->cols; i++) {
+            result[i] = mat->data[index][i];
+        }
+    
+    // Get a column
+    } else {
+        // Allocate memory for the column based on the number of rows
+        result = (MatrixElement *)malloc(mat->rows * sizeof(MatrixElement));
+
+        // Catch errors with memory allocation
+        if (!result) {
+            printf("Memory allocation failed\n");
+            return NULL;
+        }
+
+        // Put the data into the memory location
+        for (int i = 0; i < mat->rows; i++) {
+            result[i] = mat->data[i][index];
+        }
+    }
+    return result;
+}
+
 // Free the memory allocated to a matrix
 void freeMatrix(Matrix *mat) {
     for (int i = 0; i < mat->rows; i++) {
@@ -167,6 +217,29 @@ int main() {
 
     MatrixElement retrievedElement = getMatrixElement(doubleMatrix, 0, 0);
     printf("%f\n", retrievedElement.double_val);
+
+    // Assuming a matrix `mat` has already been created and filled
+    MatrixElement* row = getRowOrColumn(&doubleMatrix, ROW, 1); // Get the second row
+    if (row) {
+        for (int i = 0; i < doubleMatrix.cols; i++) {
+            // Assuming INT type for simplicity
+            printf("row");
+            printf("%f ", row[i].double_val);
+        }
+        free(row); // Remember to free the allocated memory
+    }
+
+    MatrixElement* col = getRowOrColumn(&doubleMatrix, COL, 0); // Get the first column
+    if (col) {
+        for (int i = 0; i < doubleMatrix.rows; i++) {
+            // Assuming INT type for simplicity
+            printf("column");
+            printf("%f ", col[i].double_val);
+        }
+        free(col); // Remember to free the allocated memory
+    }
+
+    return 0;
 
     // Free the matrix
     freeMatrix(&doubleMatrix);
