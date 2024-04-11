@@ -97,24 +97,24 @@ void getMatrixDimensions(Matrix mat, int *rows, int *cols) {
 // Set a specific element in the matrix
 // Accepts a matrix, a column int, a row int, and a matrix element
 // Returns void
-void setMatrixElement(Matrix mat, int row, int col, MatrixElement data) {
+void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
     // Check if the row and column indices are within the bounds of the matrix
     // TODO - Make this switchable
-    if (row < 0 || row >= mat.rows || col < 0 || col >= mat.cols) {
+    if (row < 0 || row >= mat->rows || col < 0 || col >= mat->cols) {
         printf("Error: Index out of bounds\n");
         return; // Exit the function if indices are out of bounds
     }
 
     // Assign the provided data to the specified location in the matrix
-    switch (mat.data_type) {
+    switch (mat->data_type) {
         case INT:
-            mat.data[row][col].int_val = data.int_val;
+            mat->data[row][col].int_val = data.int_val;
             break;
         case DOUBLE:
-            mat.data[row][col].double_val = data.double_val;
+            mat->data[row][col].double_val = data.double_val;
             break;
         case CHAR:
-            mat.data[row][col].char_val = data.char_val;
+            mat->data[row][col].char_val = data.char_val;
             break;
         default:
             // TODO - Better error handling?
@@ -127,74 +127,49 @@ void setMatrixElement(Matrix mat, int row, int col, MatrixElement data) {
 // Accepts a matrix, a column int, a row int, and a matrix element
 // Returns void
 MatrixElement getMatrixElement(Matrix mat, int row, int col) {
+    // A default element to return if we're out of bounds
+    MatrixElement defaultElement = {0};
+
     // Check if the row and column indices are within the bounds of the matrix
     // TODO - Make this switchable
     if (row < 0 || row >= mat.rows || col < 0 || col >= mat.cols) {
         printf("Error: Index out of bounds\n");
-        MatrixElement defaultElement = {0};
         return defaultElement;
     }
 
     return mat.data[row][col];
 }
 
+// Free the memory allocated to a matrix
+void freeMatrix(Matrix *mat) {
+    for (int i = 0; i < mat->rows; i++) {
+        free(mat->data[i]);
+    }
+    free(mat->data);
+}
+
+
 int main() {
-    // Create matrices of different data types
-    Matrix intMatrix = createMatrix(3, 6, INT);
+    // Example usage
     Matrix doubleMatrix = createMatrix(4, 2, DOUBLE);
-    Matrix charMatrix = createMatrix(1, 7, CHAR);
-
-    // Print matrices
-    printf("Integer Matrix:\n");
-    printMatrix(intMatrix);
-    printf("\n");
-
-    printf("Double Matrix:\n");
-    printMatrix(doubleMatrix);
-    printf("\n");
-
-    printf("Char Matrix:\n");
-    printMatrix(charMatrix);
-    printf("\n");
-
-    // Free memory allocated for the matrix data
-    for (int i = 0; i < intMatrix.rows; i++) {
-        free(intMatrix.data[i]);
-    }
-    free(intMatrix.data);
-
-    for (int i = 0; i < doubleMatrix.rows; i++) {
-        free(doubleMatrix.data[i]);
-    }
-
-
-    for (int i = 0; i < charMatrix.rows; i++) {
-        free(charMatrix.data[i]);
-    }
-    free(charMatrix.data);
 
     // Get matrix dimensions
     int rows, cols;
     getMatrixDimensions(doubleMatrix, &rows, &cols);
     printf("Matrix dimensions: %d rows x %d columns\n", rows, cols);
 
-    printf("Set element");
+    // Set and get an element
     MatrixElement element;
-
-    printf("Set element value");
     element.double_val = 3.1415;
-
-    printf("Insert element");
-    setMatrixElement(doubleMatrix, 0, 0, element);
+    setMatrixElement(&doubleMatrix, 0, 0, element);
 
     printMatrix(doubleMatrix);
 
-    // Get the matrix element at row 0, column 0
-    MatrixElement element2 = getMatrixElement(doubleMatrix, 6, 0);
+    MatrixElement retrievedElement = getMatrixElement(doubleMatrix, 0, 0);
+    printf("%f\n", retrievedElement.double_val);
 
-    // Print the double value of the matrix element
-    printf("%f\n", element2.double_val);
+    // Free the matrix
+    freeMatrix(&doubleMatrix);
 
-    free(doubleMatrix.data);
     return 0;
 }
