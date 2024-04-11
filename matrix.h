@@ -8,6 +8,11 @@ typedef enum {
     CHAR
 } DataType;
 
+// Enum that we can use to select if we're getting a row or a column
+typedef enum {
+    ROW,
+    COL
+} RowOrCol;
 
 // A union to use for our actual elements that will go into the matrix
 typedef union {
