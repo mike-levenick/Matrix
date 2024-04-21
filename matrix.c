@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "matrix.h"
+
 
 // Create Matrix Function
 // Accepts an int of rows, an int of columns, and then a data type enum from the header
@@ -120,6 +122,31 @@ void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
         default:
             printf("Error: Unknown data type\n");
             break;
+    }
+}
+
+// Function to set all elements of a specified row or column to a given value
+void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement value) {
+    if (roc == ROW) {
+        // Check if the row index is within bounds
+        if (index < 0 || index >= mat->rows) {
+            printf("Error: Row index out of bounds\n");
+            return;
+        }
+        // Set each element in the row
+        for (int col = 0; col < mat->cols; col++) {
+            setMatrixElement(mat, index, col, value);
+        }
+    } else if (roc == COL) {
+        // Check if the column index is within bounds
+        if (index < 0 || index >= mat->cols) {
+            printf("Error: Column index out of bounds\n");
+            return;
+        }
+        // Set each element in the column
+        for (int row = 0; row < mat->rows; row++) {
+            setMatrixElement(mat, row, index, value);
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 #include "minunit.h"
 #include "matrix.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int tests_run = 0;
 
@@ -39,6 +40,41 @@ static char * test_matrix_operations() {
     return 0;
 }
 
+static char* test_set_row() {
+    Matrix mat = createMatrix(3, 3, INT);
+    MatrixElement val;
+    val.int_val = 5;
+
+    // Set the first row
+    setRowOrColumn(&mat, 0, ROW, val);
+
+    // Check if all elements in the first row are set correctly
+    for (int i = 0; i < mat.cols; i++) {
+        mu_assert("Error: Element not set correctly in row", mat.data[0][i].int_val == 5);
+    }
+
+    // Clean up
+    freeMatrix(&mat);
+    return 0;
+}
+
+static char* test_set_column() {
+    Matrix mat = createMatrix(3, 3, INT);
+    MatrixElement val;
+    val.int_val = 10;
+
+    // Set the second column
+    setRowOrColumn(&mat, 1, COL, val);
+
+    // Check if all elements in the second column are set correctly
+    for (int i = 0; i < mat.rows; i++) {
+        mu_assert("Error: Element not set correctly in column", mat.data[i][1].int_val == 10);
+    }
+
+    // Clean up
+    freeMatrix(&mat);
+    return 0;
+}
 
 // Run the tests
 static char * all_tests() {
@@ -46,6 +82,8 @@ static char * all_tests() {
     // List of tests
     mu_run_test(test_create_matrix);
     mu_run_test(test_matrix_operations);
+    mu_run_test(test_set_row);
+    mu_run_test(test_set_column);
     
     return 0;
 }
