@@ -29,11 +29,27 @@ typedef struct {
     MatrixElement **data;
 } Matrix;
 
-// Function prototypes
+// MARK - Function prototypes
+
 // A create matrix prototype
 Matrix createMatrix(int rows, int cols, DataType data_type);
 
 // A print matrix prototype
 void printMatrix(Matrix mat);
 
-#endif /* MATRIX_H */
+// Get matrix dimensions
+void getMatrixDimensions(Matrix mat, int *rows, int *cols);
+
+// Set matrix element
+void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data);
+
+// Get matrix element
+MatrixElement getMatrixElement(Matrix mat, int row, int col);
+
+// Get row or column
+MatrixElement* getRowOrColumn(Matrix *mat, RowOrCol roc, int index);
+
+// Free the memory from a matrix
+void freeMatrix(Matrix *mat);
+
+#endif

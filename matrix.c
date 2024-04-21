@@ -41,10 +41,9 @@ Matrix createMatrix(int rows, int cols, DataType data_type) {
 
                 // Initialize with NULL values if it's full of CHARs
                 case CHAR:
-                    mat.data[r][c].char_val = 'A';
+                    mat.data[r][c].char_val = '\0';
                     break;
                 default:
-                    // TODO Add error handling for unknown data types
                     break;
             }
         }
@@ -98,12 +97,14 @@ void getMatrixDimensions(Matrix mat, int *rows, int *cols) {
 // Accepts a matrix pointer, a column int, a row int, and a matrix element
 // Returns void
 void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
+
     // Check if the row and column indices are within the bounds of the matrix
-    // TODO - Make this switchable
+    #ifdef ENABLE_BOUNDS_CHECK
     if (row < 0 || row >= mat->rows || col < 0 || col >= mat->cols) {
         printf("Error: Index out of bounds\n");
-        return; // Exit the function if indices are out of bounds
+        return; 
     }
+    #endif
 
     // Assign the provided data to the specified location in the matrix
     switch (mat->data_type) {
@@ -117,7 +118,6 @@ void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
             mat->data[row][col].char_val = data.char_val;
             break;
         default:
-            // TODO - Better error handling?
             printf("Error: Unknown data type\n");
             break;
     }
@@ -127,15 +127,18 @@ void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
 // Accepts a matrix, a column int, a row int, and a matrix element
 // Returns void
 MatrixElement getMatrixElement(Matrix mat, int row, int col) {
+
+    // Check if the row and column indices are within the bounds of the matrix
+    #ifdef ENABLE_BOUNDS_CHECK
+
     // A default element to return if we're out of bounds
     MatrixElement defaultElement = {0};
 
-    // Check if the row and column indices are within the bounds of the matrix
-    // TODO - Make this switchable
     if (row < 0 || row >= mat.rows || col < 0 || col >= mat.cols) {
         printf("Error: Index out of bounds\n");
         return defaultElement;
     }
+    #endif
 
     return mat.data[row][col];
 }
@@ -144,12 +147,15 @@ MatrixElement getMatrixElement(Matrix mat, int row, int col) {
 // Accepts a matrix pointer, and a Row Or Column enum, along with an index
 // Returns a MatrixElement pointer
 MatrixElement* getRowOrColumn(Matrix *mat, RowOrCol roc, int index) {
+
     // Check if the index is out of bounds
+    #ifdef ENABLE_BOUNDS_CHECK
     if ((roc == ROW && (index < 0 || index >= mat->rows)) || 
         (roc == COL && (index < 0 || index >= mat->cols))) {
         printf("Error: Index out of bounds\n");
-        return NULL; // Return NULL to indicate an error
+        return NULL;
     }
+    #endif
 
     // Allocate memory for the row or column 
     MatrixElement *result = NULL;
@@ -196,53 +202,4 @@ void freeMatrix(Matrix *mat) {
         free(mat->data[i]);
     }
     free(mat->data);
-}
-
-
-int main() {
-    // Example usage
-    Matrix doubleMatrix = createMatrix(4, 2, DOUBLE);
-
-    // Get matrix dimensions
-    int rows, cols;
-    getMatrixDimensions(doubleMatrix, &rows, &cols);
-    printf("Matrix dimensions: %d rows x %d columns\n", rows, cols);
-
-    // Set and get an element
-    MatrixElement element;
-    element.double_val = 3.1415;
-    setMatrixElement(&doubleMatrix, 0, 0, element);
-
-    printMatrix(doubleMatrix);
-
-    MatrixElement retrievedElement = getMatrixElement(doubleMatrix, 0, 0);
-    printf("%f\n", retrievedElement.double_val);
-
-    // Assuming a matrix `mat` has already been created and filled
-    MatrixElement* row = getRowOrColumn(&doubleMatrix, ROW, 1); // Get the second row
-    if (row) {
-        for (int i = 0; i < doubleMatrix.cols; i++) {
-            // Assuming INT type for simplicity
-            printf("row");
-            printf("%f ", row[i].double_val);
-        }
-        free(row); // Remember to free the allocated memory
-    }
-
-    MatrixElement* col = getRowOrColumn(&doubleMatrix, COL, 0); // Get the first column
-    if (col) {
-        for (int i = 0; i < doubleMatrix.rows; i++) {
-            // Assuming INT type for simplicity
-            printf("column");
-            printf("%f ", col[i].double_val);
-        }
-        free(col); // Remember to free the allocated memory
-    }
-
-    return 0;
-
-    // Free the matrix
-    freeMatrix(&doubleMatrix);
-
-    return 0;
 }
