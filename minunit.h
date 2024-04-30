@@ -22,4 +22,4 @@ extern char test_details[1024]; // Increase size as needed for detailed output
     if (message) tests_failed++; \
 } while (0)
 
-#endif /* MINUNIT_H */
+#endif
