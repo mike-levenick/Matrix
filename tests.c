@@ -74,6 +74,42 @@ static char* test_set_column() {
     return 0;
 }
 
+static char * test_create_matrix_subset_complete() {
+    Matrix original = createMatrix(3, 3, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            original.data[r][c].int_val = r * 3 + c;
+        }
+    }
+
+    Matrix subset = createMatrixSubset(original, 0, 2, 0, 2);
+    mu_assert("error, subset.rows != 3", subset.rows == 3);
+    mu_assert("error, subset.cols != 3", subset.cols == 3);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mu_assert("error, subset element does not match original", subset.data[r][c].int_val == original.data[r][c].int_val);
+        }
+    }
+
+    freeMatrix(&original);
+    freeMatrix(&subset);
+    return 0;
+}
+
+static char * test_create_matrix_subset_single_element() {
+    Matrix original = createMatrix(5, 5, DOUBLE);
+    original.data[2][2].double_val = 1.234;
+
+    Matrix subset = createMatrixSubset(original, 2, 2, 2, 2);
+    mu_assert("error, subset.rows != 1", subset.rows == 1);
+    mu_assert("error, subset.cols != 1", subset.cols == 1);
+    mu_assert("error, subset element does not match original single value", subset.data[0][0].double_val == 1.234);
+
+    freeMatrix(&original);
+    freeMatrix(&subset);
+    return 0;
+}
+
 // Run the tests
 static char * all_tests() {
 
@@ -82,7 +118,8 @@ static char * all_tests() {
     mu_run_test(test_matrix_operations);
     mu_run_test(test_set_row);
     mu_run_test(test_set_column);
-    
+    mu_run_test(test_create_matrix_subset_complete);
+    mu_run_test(test_create_matrix_subset_single_element);
     return 0;
 }
 

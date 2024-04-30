@@ -157,6 +157,36 @@ void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement *element
     }
 }
 
+// Create a matrix from a subset of a larger matrix
+// Accepts a matrix, a starting row, ending row, starting col, ending col
+// Returns a new matrix
+Matrix createMatrixSubset(Matrix original, int startRow, int endRow, int startCol, int endCol) {
+    // Check bounds if we have bounds checking enabled
+    #ifdef ENABLE_BOUNDS_CHECK
+    if (startRow < 0 || endRow >= original.rows || startRow > endRow ||
+        startCol < 0 || endCol >= original.cols || startCol > endCol) {
+        fprintf(stderr, "Error: Index out of bounds or invalid range.\n");
+        exit(EXIT_FAILURE);
+    }
+    #endif
+
+    // Calculate new matrix dimensions
+    int rows = endRow - startRow + 1;
+    int cols = endCol - startCol + 1;
+
+    // Create new matrix
+    Matrix newMatrix = createMatrix(rows, cols, original.data_type);
+
+    // Copy data from original matrix to new matrix
+    for (int r = startRow; r <= endRow; r++) {
+        for (int c = startCol; c <= endCol; c++) {
+            newMatrix.data[r - startRow][c - startCol] = original.data[r][c];
+        }
+    }
+
+    return newMatrix;
+}
+
 // Set a specific element in the matrix
 // Accepts a matrix, a column int, a row int, and a matrix element
 // Returns void
