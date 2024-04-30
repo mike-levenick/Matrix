@@ -187,6 +187,56 @@ Matrix createMatrixSubset(Matrix original, int startRow, int endRow, int startCo
     return newMatrix;
 }
 
+// Resize a matrix
+// Accepts a matrix, an int for new number of rows, and an int for new number of columns
+// Returns void
+void resizeMatrix(Matrix *mat, int newRows, int newCols) {
+    if (newRows < 0 || newCols < 0) {
+        fprintf(stderr, "Error: Invalid matrix dimensions.\n");
+        return;
+    }
+
+    // Allocate new data array
+    MatrixElement **newData = malloc(newRows * sizeof(MatrixElement *));
+    if (!newData) {
+        fprintf(stderr, "Memory allocation failed for new data rows.\n");
+        return;
+    }
+
+    for (int i = 0; i < newRows; i++) {
+        newData[i] = malloc(newCols * sizeof(MatrixElement));
+        if (!newData[i]) {
+            fprintf(stderr, "Memory allocation failed for new data columns at row %d.\n", i);
+            // Free already allocated rows
+            for (int j = 0; j < i; j++) {
+                free(newData[j]);
+            }
+            free(newData);
+            return;
+        }
+    }
+
+    // Copy data from old matrix to new matrix
+    int minRows = (newRows > mat->rows) ? mat->rows : newRows;
+    int minCols = (newCols > mat->cols) ? mat->cols : newCols;
+    for (int r = 0; r < minRows; r++) {
+        for (int c = 0; c < minCols; c++) {
+            newData[r][c] = mat->data[r][c];
+        }
+    }
+
+    // Free old data
+    for (int i = 0; i < mat->rows; i++) {
+        free(mat->data[i]);
+    }
+    free(mat->data);
+
+    // Update matrix properties
+    mat->data = newData;
+    mat->rows = newRows;
+    mat->cols = newCols;
+}
+
 // Set a specific element in the matrix
 // Accepts a matrix, a column int, a row int, and a matrix element
 // Returns void

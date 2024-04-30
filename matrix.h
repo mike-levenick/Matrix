@@ -49,6 +49,9 @@ void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement *element
 // Create a matrix from a subset of a larger matrix
 Matrix createMatrixSubset(Matrix original, int startRow, int endRow, int startCol, int endCol);
 
+// Resize a matrix
+void resizeMatrix(Matrix *mat, int newRows, int newCols);
+
 // Get matrix element
 MatrixElement getMatrixElement(Matrix mat, int row, int col);
 

@@ -110,6 +110,54 @@ static char * test_create_matrix_subset_single_element() {
     return 0;
 }
 
+static char * test_resize_matrix_increase() {
+    Matrix mat = createMatrix(2, 2, INT);
+    mat.data[0][0].int_val = 1;
+    mat.data[0][1].int_val = 2;
+    mat.data[1][0].int_val = 3;
+    mat.data[1][1].int_val = 4;
+
+    resizeMatrix(&mat, 3, 3);
+
+    mu_assert("error, mat.rows != 3", mat.rows == 3);
+    mu_assert("error, mat.cols != 3", mat.cols == 3);
+    mu_assert("error, mat.data[0][0].int_val != 1", mat.data[0][0].int_val == 1);
+    mu_assert("error, mat.data[1][1].int_val != 4", mat.data[1][1].int_val == 4);
+    mu_assert("error, uninitialized cell should be 0 for int", mat.data[2][2].int_val == 0);
+
+    freeMatrix(&mat);
+    return 0;
+}
+
+static char * test_resize_matrix_decrease() {
+    Matrix mat = createMatrix(3, 3, INT);
+    mat.data[2][2].int_val = 9;
+
+    resizeMatrix(&mat, 2, 2);
+
+    mu_assert("error, mat.rows != 2", mat.rows == 2);
+    mu_assert("error, mat.cols != 2", mat.cols == 2);
+    mu_assert("error, data beyond new dimensions should not be accessible", mat.data[1][1].int_val == 0);
+
+    freeMatrix(&mat);
+    return 0;
+}
+
+static char * test_resize_matrix_to_zero() {
+    Matrix mat = createMatrix(3, 3, INT);
+
+    resizeMatrix(&mat, 0, 0);
+
+    mu_assert("error, mat.rows should be 0", mat.rows == 0);
+    mu_assert("error, mat.cols should be 0", mat.cols == 0);
+
+    // Here, we assume mat.data should be NULL or handled gracefully
+    mu_assert("error, mat.data should be NULL or invalid", mat.data == NULL || mat.cols == 0);
+
+    freeMatrix(&mat);
+    return 0;
+}
+
 // Run the tests
 static char * all_tests() {
 
@@ -120,6 +168,9 @@ static char * all_tests() {
     mu_run_test(test_set_column);
     mu_run_test(test_create_matrix_subset_complete);
     mu_run_test(test_create_matrix_subset_single_element);
+    mu_run_test(test_resize_matrix_increase);
+    mu_run_test(test_resize_matrix_decrease);
+    mu_run_test(test_resize_matrix_to_zero);
     return 0;
 }
 
