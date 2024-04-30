@@ -52,6 +52,9 @@ Matrix createMatrixSubset(Matrix original, int startRow, int endRow, int startCo
 // Resize a matrix
 void resizeMatrix(Matrix *mat, int newRows, int newCols);
 
+// Replace a subset of a matrix
+void setMatrixSubset(Matrix *sourceMat, Matrix *destMat, int startRow, int startCol);
+
 // Get matrix element
 MatrixElement getMatrixElement(Matrix mat, int row, int col);
 

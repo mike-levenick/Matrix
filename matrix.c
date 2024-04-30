@@ -165,7 +165,7 @@ Matrix createMatrixSubset(Matrix original, int startRow, int endRow, int startCo
     #ifdef ENABLE_BOUNDS_CHECK
     if (startRow < 0 || endRow >= original.rows || startRow > endRow ||
         startCol < 0 || endCol >= original.cols || startCol > endCol) {
-        fprintf(stderr, "Error: Index out of bounds or invalid range.\n");
+        printf("Error: Index out of bounds or invalid range.\n");
         exit(EXIT_FAILURE);
     }
     #endif
@@ -191,22 +191,26 @@ Matrix createMatrixSubset(Matrix original, int startRow, int endRow, int startCo
 // Accepts a matrix, an int for new number of rows, and an int for new number of columns
 // Returns void
 void resizeMatrix(Matrix *mat, int newRows, int newCols) {
+
+    // Perform a bounds check if enabled
+    #ifdef ENABLE_BOUNDS_CHECK
     if (newRows < 0 || newCols < 0) {
-        fprintf(stderr, "Error: Invalid matrix dimensions.\n");
+        printf("Error: Invalid matrix dimensions.\n");
         return;
     }
+    #endif
 
     // Allocate new data array
     MatrixElement **newData = malloc(newRows * sizeof(MatrixElement *));
     if (!newData) {
-        fprintf(stderr, "Memory allocation failed for new data rows.\n");
+        printf("Memory allocation failed for new data rows.\n");
         return;
     }
 
     for (int i = 0; i < newRows; i++) {
         newData[i] = malloc(newCols * sizeof(MatrixElement));
         if (!newData[i]) {
-            fprintf(stderr, "Memory allocation failed for new data columns at row %d.\n", i);
+            printf("Memory allocation failed for new data columns at row %d.\n", i);
             // Free already allocated rows
             for (int j = 0; j < i; j++) {
                 free(newData[j]);
@@ -235,6 +239,27 @@ void resizeMatrix(Matrix *mat, int newRows, int newCols) {
     mat->data = newData;
     mat->rows = newRows;
     mat->cols = newCols;
+}
+
+// Set matrix subset
+// Accepts a source matrix, a destination matrix, and a starting row and column to put the data into.
+void setMatrixSubset(Matrix *sourceMat, Matrix *destMat, int startRow, int startCol) {
+
+    // Check if the start indices are within the bounds of the destination matrix
+    #ifdef ENABLE_BOUNDS_CHECK
+    if (startRow < 0 || startRow + sourceMat->rows > destMat->rows ||
+        startCol < 0 || startCol + sourceMat->cols > destMat->cols) {
+        fprintf(stderr, "Error: Source matrix does not fit within the destination matrix at the specified start indices.\n");
+        return;
+    }
+    #endif
+
+    // Copy data from source matrix to destination matrix
+    for (int r = 0; r < sourceMat->rows; r++) {
+        for (int c = 0; c < sourceMat->cols; c++) {
+            destMat->data[startRow + r][startCol + c] = sourceMat->data[r][c];
+        }
+    }
 }
 
 // Set a specific element in the matrix
