@@ -46,6 +46,9 @@ void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data);
 // Set row or column
 void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement *elements, int numElements);
 
+// Create a matrix from a subset of a larger matrix
+Matrix createMatrixSubset(Matrix original, int startRow, int endRow, int startCol, int endCol);
+
 // Get matrix element
 MatrixElement getMatrixElement(Matrix mat, int row, int col);
 
