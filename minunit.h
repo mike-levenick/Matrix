@@ -1,14 +1,25 @@
 #ifndef MINUNIT_H
 #define MINUNIT_H
 
-// If we fail our test, return a message
-#define mu_assert(message, test) do { if (!(test)) return message; } while (0)
+#include <stdio.h>
+#include <string.h>
 
-// Run a test, and return the messgae if the test fails
-#define mu_run_test(test) do { char *message = test(); tests_run++; \
-                                if (message) return message; } while (0)
-
-// Keep track of the number of tests run
+// Accumulate test results
 extern int tests_run;
+extern int tests_failed;
+extern char test_details[1024]; // Increase size as needed for detailed output
 
-#endif
+#define mu_assert(message, test) do { \
+    if (!(test)) { \
+        sprintf(test_details + strlen(test_details), "FAIL: %s - %s\n", __func__, message); \
+        return "fail"; \
+    } \
+} while (0)
+
+#define mu_run_test(test) do { \
+    char *message = test(); \
+    tests_run++; \
+    if (message) tests_failed++; \
+} while (0)
+
+#endif /* MINUNIT_H */

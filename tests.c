@@ -4,6 +4,8 @@
 #include <stdlib.h>
 
 int tests_run = 0;
+int tests_failed = 0;
+char test_details[1024] = {0}; // Buffer to store test results
 
 // Test matrix creation
 // Doubles
@@ -30,7 +32,7 @@ static char * test_create_double_matrix() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 // Integers
@@ -57,7 +59,7 @@ static char * test_create_int_matrix() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 // Doubles
@@ -84,7 +86,7 @@ static char * test_create_char_matrix() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 // Test multiple operations. Matrix creation, element creation, and element setting
@@ -117,7 +119,7 @@ static char * test_matrix_operations() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char * test_set_row() {
@@ -152,7 +154,7 @@ static char * test_set_row() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char* test_set_column() {
@@ -186,7 +188,7 @@ static char* test_set_column() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char * test_create_matrix_subset_complete() {
@@ -230,7 +232,7 @@ static char * test_create_matrix_subset_complete() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char * test_create_matrix_subset_single_element() {
@@ -264,7 +266,7 @@ static char * test_create_matrix_subset_single_element() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char * test_resize_matrix_increase() {
@@ -302,7 +304,7 @@ static char * test_resize_matrix_increase() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char * test_resize_matrix_decrease() {
@@ -335,7 +337,7 @@ static char * test_resize_matrix_decrease() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char * test_resize_matrix_to_zero() {
@@ -367,7 +369,7 @@ static char * test_resize_matrix_to_zero() {
 
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 static char * test_set_matrix_subset() {
@@ -417,11 +419,12 @@ static char * test_set_matrix_subset() {
     
     // Success output
     printf("*** TEST PASSED: %s ***\n", functionName);
-    return 0;
+    return NULL;
 }
 
 // Run the tests
 static char * all_tests() {
+    test_details[0] = '\0'; // Reset the details buffer
 
     // List of tests
     mu_run_test(test_create_double_matrix);
@@ -440,14 +443,13 @@ static char * all_tests() {
 }
 
 int main() {
-    char *result = all_tests();
-    if (result != 0) {
-        printf("%s\n", result);
-    }
-    else {
+    all_tests();
+    if (tests_failed) {
+        printf("Some tests FAILED:\n%s", test_details);
+    } else {
         printf("ALL TESTS PASSED\n");
     }
     printf("Tests run: %d\n", tests_run);
 
-    return result != 0;
+    return tests_failed != 0;
 }
