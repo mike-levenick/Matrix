@@ -44,7 +44,7 @@ void getMatrixDimensions(Matrix mat, int *rows, int *cols);
 void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data);
 
 // Set row or column
-void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement value);
+void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement *elements, int numElements);
 
 // Get matrix element
 MatrixElement getMatrixElement(Matrix mat, int row, int col);

@@ -40,13 +40,12 @@ static char * test_matrix_operations() {
     return 0;
 }
 
-static char* test_set_row() {
+static char * test_set_row() {
     Matrix mat = createMatrix(3, 3, INT);
-    MatrixElement val;
-    val.int_val = 5;
+    MatrixElement vals[3] = {{.int_val = 5}, {.int_val = 5}, {.int_val = 5}};
 
-    // Set the first row
-    setRowOrColumn(&mat, 0, ROW, val);
+    // Set the first row with an array of values
+    setRowOrColumn(&mat, 0, ROW, vals, 3);
 
     // Check if all elements in the first row are set correctly
     for (int i = 0; i < mat.cols; i++) {
@@ -60,11 +59,10 @@ static char* test_set_row() {
 
 static char* test_set_column() {
     Matrix mat = createMatrix(3, 3, INT);
-    MatrixElement val;
-    val.int_val = 10;
+    MatrixElement vals[3] = {{.int_val = 10}, {.int_val = 10}, {.int_val = 10}};
 
-    // Set the second column
-    setRowOrColumn(&mat, 1, COL, val);
+    // Set the second column with an array of values
+    setRowOrColumn(&mat, 1, COL, vals, 3);
 
     // Check if all elements in the second column are set correctly
     for (int i = 0; i < mat.rows; i++) {

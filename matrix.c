@@ -125,27 +125,34 @@ void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
     }
 }
 
-// Function to set all elements of a specified row or column to a given value
-void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement value) {
+// Function to set all the elements in a given row or column.
+// Accepts a matrix pointer, an index for the row or column, ROC as row or column, an array of elements, and a number of elements
+// Returns void
+void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement *elements, int numElements) {
+    // Bounds checks which can be disabled
+    #ifdef ENABLE_BOUNDS_CHECK
+    if ((roc == ROW && (index < 0 || index >= mat->rows)) || 
+        (roc == COL && (index < 0 || index >= mat->cols))) {
+        printf("Error: Index out of bounds\n");
+        return;
+    }
+    #endif
+
+    // Check if we provided enough elements
+    int count = (roc == ROW) ? mat->cols : mat->rows;
+    if (numElements < count) {
+        printf("Error: Not enough elements provided\n");
+        return;
+    }
+
+    // Add the elements if everything is good
     if (roc == ROW) {
-        // Check if the row index is within bounds
-        if (index < 0 || index >= mat->rows) {
-            printf("Error: Row index out of bounds\n");
-            return;
-        }
-        // Set each element in the row
         for (int col = 0; col < mat->cols; col++) {
-            setMatrixElement(mat, index, col, value);
+            setMatrixElement(mat, index, col, elements[col]);
         }
-    } else if (roc == COL) {
-        // Check if the column index is within bounds
-        if (index < 0 || index >= mat->cols) {
-            printf("Error: Column index out of bounds\n");
-            return;
-        }
-        // Set each element in the column
+    } else {
         for (int row = 0; row < mat->rows; row++) {
-            setMatrixElement(mat, row, index, value);
+            setMatrixElement(mat, row, index, elements[row]);
         }
     }
 }
