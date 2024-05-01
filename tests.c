@@ -488,6 +488,59 @@ static char * test_adding_integer_matrix() {
     return NULL;
 }
 
+// Double
+static char * test_adding_double_matrix() {
+    // Intro output
+    const char *functionName = "Add Matrix - Double";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 4x4 matrix filled with ints
+    Matrix mat1 = createMatrix(4, 4, DOUBLE);
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat1.data[r][c].double_val = (double)r * 4 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat1);
+
+    // Create a 4x4 matrix filled with ints, 10 higher than the previous one.
+    Matrix mat2 = createMatrix(4, 4, DOUBLE);
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat2.data[r][c].double_val = (double)r * 4 + c + 10;
+        }
+    }
+
+    printf("Initial matrix 2:\n");
+    printMatrix(mat2);
+
+    // When
+    // Add the two matricies together
+    Matrix matResult = addMatrices(&mat1, &mat2);
+
+    printf("Resulting matrix after addition:\n");
+    printMatrix(matResult);
+
+    mu_assert("TEST FAILED: matrix should have 4 rows", matResult.rows == 4);
+    mu_assert("TEST FAILED: matrix should have 4 columns", matResult.cols == 4);
+
+    mu_assert("TEST FAILED: cell 0,0 should be 10", matResult.data[0][0].double_val == 10.0);
+    mu_assert("TEST FAILED: cell 1,0 should be 18", matResult.data[1][0].double_val == 18.0);
+    mu_assert("TEST FAILED: cell 3,3 should be 40", matResult.data[3][3].double_val == 40.0);
+
+    // Cleanup
+    freeMatrix(&mat1);
+    freeMatrix(&mat2);
+    freeMatrix(&matResult);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n", functionName);
+    return NULL;
+}
+
 
 // Run the tests
 static char * all_tests() {
@@ -507,6 +560,7 @@ static char * all_tests() {
     mu_run_test(test_resize_matrix_to_zero);
     mu_run_test(test_set_matrix_subset);
     mu_run_test(test_adding_integer_matrix);
+    mu_run_test(test_adding_double_matrix);
     return 0;
 }
 
