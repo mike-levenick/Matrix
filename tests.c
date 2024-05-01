@@ -24,8 +24,8 @@ static char * test_create_double_matrix() {
 
     // Then
     // Make sure it has 2 rows and 2 columns. If it doesn't, return the message
-    mu_assert("error, mat.rows != 2", mat.rows == 2);
-    mu_assert("error, mat.cols != 2", mat.cols == 2);
+    mu_assert("TEST FAILED: mat.rows != 2", mat.rows == 2);
+    mu_assert("TEST FAILED: mat.cols != 2", mat.cols == 2);
 
     // cleanup
     freeMatrix(&mat);
@@ -51,8 +51,8 @@ static char * test_create_int_matrix() {
 
     // Then
     // Make sure it has 2 rows and 2 columns. If it doesn't, return the message
-    mu_assert("error, mat.rows != 2", mat.rows == 2);
-    mu_assert("error, mat.cols != 2", mat.cols == 2);
+    mu_assert("TEST FAILED: mat.rows != 2", mat.rows == 2);
+    mu_assert("TEST FAILED: mat.cols != 2", mat.cols == 2);
 
     // cleanup
     freeMatrix(&mat);
@@ -78,8 +78,8 @@ static char * test_create_char_matrix() {
 
     // Then
     // Make sure it has 2 rows and 2 columns. If it doesn't, return the message
-    mu_assert("error, mat.rows != 2", mat.rows == 2);
-    mu_assert("error, mat.cols != 2", mat.cols == 2);
+    mu_assert("TEST FAILED: mat.rows != 2", mat.rows == 2);
+    mu_assert("TEST FAILED: mat.cols != 2", mat.cols == 2);
 
     // cleanup
     freeMatrix(&mat);
@@ -112,7 +112,7 @@ static char * test_matrix_operations() {
 
     // Then
     // Ensure the element at 0,0 is valued 5 as expected, or return a message
-    mu_assert("error, mat.data[0][0].int_val != 5", mat.data[0][0].int_val == 5);
+    mu_assert("TEST FAILED: mat.data[0][0].int_val != 5", mat.data[0][0].int_val == 5);
 
     // cleanup
     freeMatrix(&mat);
@@ -216,13 +216,13 @@ static char * test_create_matrix_subset_complete() {
 
     // Then
     // Subset should have 3 rows and 3 columns
-    mu_assert("error, subset.rows != 3", subset.rows == 3);
-    mu_assert("error, subset.cols != 3", subset.cols == 3);
+    mu_assert("TEST FAILED: subset.rows != 3", subset.rows == 3);
+    mu_assert("TEST FAILED: subset.cols != 3", subset.cols == 3);
 
     // The data in subset should match the originals
     for (int r = 0; r < 3; r++) {
         for (int c = 0; c < 3; c++) {
-            mu_assert("error, subset element does not match original", subset.data[r][c].int_val == original.data[r][c].int_val);
+            mu_assert("TEST FAILED: subset element does not match original", subset.data[r][c].int_val == original.data[r][c].int_val);
         }
     }
 
@@ -256,9 +256,9 @@ static char * test_create_matrix_subset_single_element() {
     printMatrix(subset);
 
     // Then
-    mu_assert("error, subset.rows != 1", subset.rows == 1);
-    mu_assert("error, subset.cols != 1", subset.cols == 1);
-    mu_assert("error, subset element does not match original single value", subset.data[0][0].double_val == 1.234);
+    mu_assert("TEST FAILED: subset.rows != 1", subset.rows == 1);
+    mu_assert("TEST FAILED: subset.cols != 1", subset.cols == 1);
+    mu_assert("TEST FAILED: subset element does not match original single value", subset.data[0][0].double_val == 1.234);
 
     // Cleanup
     freeMatrix(&original);
@@ -293,11 +293,11 @@ static char * test_resize_matrix_increase() {
     printMatrix(mat);
 
     // Then
-    mu_assert("error, mat.rows != 3", mat.rows == 3);
-    mu_assert("error, mat.cols != 3", mat.cols == 3);
-    mu_assert("error, mat.data[0][0].int_val != 1", mat.data[0][0].int_val == 1);
-    mu_assert("error, mat.data[1][1].int_val != 4", mat.data[1][1].int_val == 4);
-    mu_assert("error, uninitialized cell should be 0 for int", mat.data[2][2].int_val == 0);
+    mu_assert("TEST FAILED: mat.rows != 3", mat.rows == 3);
+    mu_assert("TEST FAILED: mat.cols != 3", mat.cols == 3);
+    mu_assert("TEST FAILED: mat.data[0][0].int_val != 1", mat.data[0][0].int_val == 1);
+    mu_assert("TEST FAILED: mat.data[1][1].int_val != 4", mat.data[1][1].int_val == 4);
+    mu_assert("TEST FAILED: uninitialized cell should be 0 for int", mat.data[2][2].int_val == 0);
 
     // Cleanup
     freeMatrix(&mat);
@@ -328,9 +328,9 @@ static char * test_resize_matrix_decrease() {
     printMatrix(mat);
 
     // Then
-    mu_assert("error, mat.rows != 2", mat.rows == 2);
-    mu_assert("error, mat.cols != 2", mat.cols == 2);
-    mu_assert("error, data beyond new dimensions should not be accessible", mat.data[1][1].int_val == 0);
+    mu_assert("TEST FAILED: mat.rows != 2", mat.rows == 2);
+    mu_assert("TEST FAILED: mat.cols != 2", mat.cols == 2);
+    mu_assert("TEST FAILED: data beyond new dimensions should not be accessible", mat.data[1][1].int_val == 0);
 
     // Cleanup
     freeMatrix(&mat);
@@ -358,11 +358,11 @@ static char * test_resize_matrix_to_zero() {
     printf("Resized matrix:\n");
     printMatrix(mat);
 
-    mu_assert("error, mat.rows should be 0", mat.rows == 0);
-    mu_assert("error, mat.cols should be 0", mat.cols == 0);
+    mu_assert("TEST FAILED: mat.rows should be 0", mat.rows == 0);
+    mu_assert("TEST FAILED: mat.cols should be 0", mat.cols == 0);
 
     // Here, we assume mat.data should be NULL or handled gracefully
-    mu_assert("error, mat.data should be NULL or invalid", mat.data == NULL || mat.cols == 0);
+    mu_assert("TEST FAILED: mat.data should be NULL or invalid", mat.data == NULL || mat.cols == 0);
 
     // Cleanup
     freeMatrix(&mat);
@@ -406,12 +406,12 @@ static char * test_set_matrix_subset() {
 
     // Then
     // Check that the subset was copied correctly
-    mu_assert("error, destMat.data[1][1].int_val != 5", destMat.data[1][1].int_val == 5);
-    mu_assert("error, destMat.data[2][2].int_val != 5", destMat.data[2][2].int_val == 5);
+    mu_assert("TEST FAILED: destMat.data[1][1].int_val != 5", destMat.data[1][1].int_val == 5);
+    mu_assert("TEST FAILED: destMat.data[2][2].int_val != 5", destMat.data[2][2].int_val == 5);
 
     // Check that other parts of destMat are unchanged
-    mu_assert("error, destMat.data[0][0].int_val != 10", destMat.data[0][0].int_val == 10);
-    mu_assert("error, destMat.data[3][3].int_val != 10", destMat.data[3][3].int_val == 10);
+    mu_assert("TEST FAILED: destMat.data[0][0].int_val != 10", destMat.data[0][0].int_val == 10);
+    mu_assert("TEST FAILED: destMat.data[3][3].int_val != 10", destMat.data[3][3].int_val == 10);
 
     // Clean up
     freeMatrix(&destMat);
@@ -445,13 +445,19 @@ static char * all_tests() {
 }
 
 int main() {
+    // Run all the tests
     all_tests();
-    if (tests_failed) {
-        printf("Some tests FAILED:\n%s", test_details);
-    } else {
-        printf("ALL TESTS PASSED\n");
-    }
-    printf("Tests run: %d\n", tests_run);
 
+    // Calculate a pass percentage and cast it to a double for proper maths
+    double passPercent = ((double)(tests_run - tests_failed) / tests_run) * 100;
+
+    // Output a report of our passes and failures
+    printf("\n***** TEST RESULTS REPORT: *****\n");
+    printf("There were a total of %d tests that ran.\n", tests_run);
+    printf("Out of those tests, %d passed and %d failed.\n", (tests_run-tests_failed), tests_failed);
+    printf("Pass percentage: %.2f%%.\n",passPercent);
+    if (tests_failed) {
+        printf("\nFailed test details are as follows:\n%s", test_details);
+    }
     return tests_failed != 0;
 }
