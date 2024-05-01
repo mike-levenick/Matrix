@@ -335,6 +335,46 @@ MatrixElement* getRowOrColumn(Matrix *mat, RowOrCol roc, int index) {
     return result;
 }
 
+// Function to add 2 matricies together
+// Accepts two different matrix pointers
+// Returns a matrix
+Matrix addMatrices(const Matrix *mat1, const Matrix *mat2) {
+    // Confirm our matricies are the same size, or it won't work.
+    if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
+        printf("Error: Matrices dimensions do not match.\n");
+        exit(EXIT_FAILURE); 
+    }
+
+    // Confirm we hav ethe same data type in each matrix or it won't work
+    if (mat1->data_type != mat2->data_type) {
+        printf("Error: Matrices data types do not match.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Create the new matrix to store the result in
+    Matrix result = createMatrix(mat1->rows, mat1->cols, mat1->data_type);
+
+    // Perform the actual addition
+    for (int i = 0; i < mat1->rows; i++) {
+        for (int j = 0; j < mat1->cols; j++) {
+            switch (mat1->data_type) {
+                case INT:
+                    result.data[i][j].int_val = mat1->data[i][j].int_val + mat2->data[i][j].int_val;
+                    break;
+                case DOUBLE:
+                    result.data[i][j].double_val = mat1->data[i][j].double_val + mat2->data[i][j].double_val;
+                    break;
+                case CHAR:
+                    printf("Error: Addition not supported for CHAR type matrices.\n");
+                    exit(EXIT_FAILURE);
+                    break;
+            }
+        }
+    }
+
+    return result;
+}
+
 // Free the memory allocated to a matrix
 void freeMatrix(Matrix *mat) {
     for (int i = 0; i < mat->rows; i++) {

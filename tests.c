@@ -122,6 +122,8 @@ static char * test_matrix_operations() {
     return NULL;
 }
 
+// Test setting rows and columns at once
+// Row
 static char * test_set_row() {
     // Intro output
     const char *functionName = "Set Row";
@@ -157,6 +159,7 @@ static char * test_set_row() {
     return NULL;
 }
 
+// Column
 static char* test_set_column() {
     // Intro output
     const char *functionName = "Set Column";
@@ -191,6 +194,8 @@ static char* test_set_column() {
     return NULL;
 }
 
+// Test matrix subset operations
+// Complete matrix
 static char * test_create_matrix_subset_complete() {
     // Intro output
     const char *functionName = "Create Subset - Complete";
@@ -235,6 +240,7 @@ static char * test_create_matrix_subset_complete() {
     return NULL;
 }
 
+// Single element matrix
 static char * test_create_matrix_subset_single_element() {
     // Intro output
     const char *functionName = "Create Subset - Single Element";
@@ -269,6 +275,8 @@ static char * test_create_matrix_subset_single_element() {
     return NULL;
 }
 
+// Test matrix resize operations
+// Increase size
 static char * test_resize_matrix_increase() {
     // Intro output
     const char *functionName = "Resize Matrix - Increase";
@@ -307,6 +315,7 @@ static char * test_resize_matrix_increase() {
     return NULL;
 }
 
+// Decrease size
 static char * test_resize_matrix_decrease() {
     // Intro output
     const char *functionName = "Resize Matrix - Decrease";
@@ -340,6 +349,7 @@ static char * test_resize_matrix_decrease() {
     return NULL;
 }
 
+// Resize to zero
 static char * test_resize_matrix_to_zero() {
     // Intro output
     const char *functionName = "Resize Matrix - To Zero";
@@ -372,6 +382,7 @@ static char * test_resize_matrix_to_zero() {
     return NULL;
 }
 
+// Test setting a matrix subset
 static char * test_set_matrix_subset() {
     // Intro output
     const char *functionName = "Set Matrix Subset";
@@ -422,6 +433,60 @@ static char * test_set_matrix_subset() {
     return NULL;
 }
 
+// Test matrix maths
+// Matrix addition
+// Integer
+static char * test_adding_integer_matrix() {
+    // Intro output
+    const char *functionName = "Add Matrix - Integer";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 4x4 matrix filled with ints
+    Matrix mat1 = createMatrix(4, 4, INT);
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat1.data[r][c].int_val = r * 4 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat1);
+
+    // Create a 4x4 matrix filled with ints, 10 higher than the previous one.
+    Matrix mat2 = createMatrix(4, 4, INT);
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat2.data[r][c].int_val = r * 4 + c + 10;
+        }
+    }
+
+    printf("Initial matrix 2:\n");
+    printMatrix(mat2);
+
+    // When
+    // Add the two matricies together
+    Matrix matResult = addMatrices(&mat1, &mat2);
+
+    printf("Resulting matrix after addition:\n");
+    printMatrix(matResult);
+
+    mu_assert("TEST FAILED: matrix should have 4 rows", matResult.rows == 4);
+    mu_assert("TEST FAILED: matrix should have 4 columns", matResult.cols == 4);
+
+    mu_assert("TEST FAILED: cell 0,0 should be 10", matResult.data[0][0].int_val == 10);
+    mu_assert("TEST FAILED: cell 1,0 should be 18", matResult.data[1][0].int_val == 18);
+    mu_assert("TEST FAILED: cell 3,3 should be 40", matResult.data[3][3].int_val == 40);
+
+    // Cleanup
+    freeMatrix(&mat1);
+    freeMatrix(&mat2);
+    freeMatrix(&matResult);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n", functionName);
+    return NULL;
+}
 
 
 // Run the tests
@@ -441,6 +506,7 @@ static char * all_tests() {
     mu_run_test(test_resize_matrix_decrease);
     mu_run_test(test_resize_matrix_to_zero);
     mu_run_test(test_set_matrix_subset);
+    mu_run_test(test_adding_integer_matrix);
     return 0;
 }
 
