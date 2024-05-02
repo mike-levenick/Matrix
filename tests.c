@@ -1228,7 +1228,7 @@ static char * test_deep_copy_invalid_matrix() {
     printf("*** TEST START: %s ***\n", functionName);
 
     // Given
-    // Create a 3x3 matrix filled with CHARs
+    // Create an invalid
     Matrix mat = invalidMatrix();
 
     printf("Initial matrix 1:\n");
@@ -1248,6 +1248,138 @@ static char * test_deep_copy_invalid_matrix() {
     // Cleanup
     freeMatrix(&mat);
     freeMatrix(&deepCopy);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Matrix Same-ness Tests
+// Instance-wise 
+static char * test_sameness_instance_matrix() {
+    // Intro output
+    const char *functionName = "Sameness - Instance";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with INTs
+    Matrix mat1 = createMatrix(3, 3, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mat1.data[r][c].int_val = r * 3 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat1);
+
+    // Make a copy
+    Matrix mat2 = mat1;
+
+    printf("Initial matrix 2:\n");
+    printMatrix(mat2);
+
+
+    // When
+    // Compare both matricies
+    Sameness checkSame = checkMatrixSameness(&mat1, &mat2);
+
+    // Then
+    // Should be the same instance
+    mu_assert("TEST FAILED: Matricies should be same instance.", checkSame = INSTANCE);
+
+    // Cleanup (both matricies same)
+    freeMatrix(&mat1);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Element-wise 
+static char * test_sameness_element_matrix() {
+    // Intro output
+    const char *functionName = "Sameness - Element";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with INTs
+    Matrix mat1 = createMatrix(3, 3, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mat1.data[r][c].int_val = r * 3 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat1);
+
+    // Make a copy
+    Matrix mat2 = deepCopyMatrix(&mat1);
+
+    printf("Initial matrix 2:\n");
+    printMatrix(mat2);
+
+
+    // When
+    // Compare both matricies
+    Sameness checkSame = checkMatrixSameness(&mat1, &mat2);
+
+    // Then
+    // Should be the same instance
+    mu_assert("TEST FAILED: Matricies should be element-wise same.", checkSame = ELEMENT);
+
+    // Cleanup
+    freeMatrix(&mat1);
+    freeMatrix(&mat2);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Neither
+static char * test_sameness_neither_matrix() {
+    // Intro output
+    const char *functionName = "Sameness - Neither";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with INTs
+    Matrix mat1 = createMatrix(3, 3, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mat1.data[r][c].int_val = r * 3 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat1);
+
+    // Make another
+    // Create a 3x3 matrix filled with INTs
+    Matrix mat2 = createMatrix(3, 3, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mat2.data[r][c].int_val = r * 3 + c + 1;
+        }
+    }
+
+    printf("Initial matrix 2:\n");
+    printMatrix(mat2);
+
+
+    // When
+    // Compare both matricies
+    Sameness checkSame = checkMatrixSameness(&mat1, &mat2);
+
+    // Then
+    // Should be the same instance
+    mu_assert("TEST FAILED: Matricies should not be the same.", checkSame == NEITHER);
+
+    // Cleanup
+    freeMatrix(&mat1);
+    freeMatrix(&mat2);
 
     // Success output
     printf("*** TEST PASSED: %s ***\n\n", functionName);
@@ -1306,6 +1438,11 @@ static char * all_tests() {
     mu_run_test(test_deep_copy_double_matrix);
     mu_run_test(test_deep_copy_char_matrix);
     mu_run_test(test_deep_copy_invalid_matrix);
+
+    // Sameness
+    mu_run_test(test_sameness_instance_matrix);
+    mu_run_test(test_sameness_element_matrix);
+    mu_run_test(test_sameness_neither_matrix);
 
     return 0;
 }
