@@ -18,7 +18,7 @@ static char * test_create_double_matrix() {
 
     // When
     // Create a 2x2 matrix
-    Matrix mat = createMatrix(2, 2, DOUBLE);
+    Matrix mat = createMatrix(2, 3, DOUBLE);
 
     // Then
     printf("Created matrix:\n");
@@ -26,7 +26,7 @@ static char * test_create_double_matrix() {
 
     // Make sure it has 2 rows and 2 columns
     mu_assert("TEST FAILED: mat.rows != 2", mat.rows == 2);
-    mu_assert("TEST FAILED: mat.cols != 2", mat.cols == 2);
+    mu_assert("TEST FAILED: mat.cols != 2", mat.cols == 3);
 
     // cleanup
     freeMatrix(&mat);

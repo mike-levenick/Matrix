@@ -6,7 +6,7 @@
 // Create Matrix Function
 // Accepts an int of rows, an int of columns, and then a data type enum from the header
 // Returns a matrix
-Matrix createMatrix(int rows, int cols, DataType data_type) {
+Matrix createMatrix_legacy(int rows, int cols, DataType data_type) {
     Matrix mat;
     mat.rows = rows;
     mat.cols = cols;
@@ -50,6 +50,56 @@ Matrix createMatrix(int rows, int cols, DataType data_type) {
         }
     }
     // Return the initialized matrix
+    return mat;
+}
+
+// create 2
+Matrix createMatrix(int rows, int cols, DataType data_type) {
+    Matrix mat;
+    mat.rows = rows;
+    mat.cols = cols;
+    mat.data_type = data_type;
+
+    #ifdef ROW_MAJOR_ORDER
+    int primaryDim = rows;
+    int secondaryDim = cols;
+    #elif defined(COLUMN_MAJOR_ORDER)
+    int primaryDim = cols;
+    int secondaryDim = rows;
+    #endif
+
+    // Memory Allocation
+    // Allocate memory for the 'rows' which might represent actual rows or columns based on the storage order
+    mat.data = (MatrixElement **)malloc(primaryDim * sizeof(MatrixElement *));
+
+    if (mat.data == NULL) {
+        fprintf(stderr, "Memory allocation failed for matrix rows\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Allocate memory for each 'row' which could be a row or a column of elements
+    for (int i = 0; i < primaryDim; i++) {
+        mat.data[i] = (MatrixElement *)malloc(secondaryDim * sizeof(MatrixElement));
+        if (!mat.data[i]) {
+            fprintf(stderr, "Memory allocation failed for matrix columns at row %d\n", i);
+            // Free previously allocated memory to avoid leaks
+            for (int j = 0; j < i; j++) {
+                free(mat.data[j]);
+            }
+            free(mat.data);
+            exit(EXIT_FAILURE);
+        }
+
+        // Initialize elements to default values
+        if (data_type == INT || data_type == CHAR) {
+            memset(mat.data[i], 0, cols * sizeof(MatrixElement));  // Set all bytes to 0
+        } else if (data_type == DOUBLE) {
+            for (int c = 0; c < cols; c++) {
+                mat.data[i][c].double_val = 0.0;
+            }
+        }
+    }
+
     return mat;
 }
 

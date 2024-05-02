@@ -1,6 +1,10 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+// Choose row or column major order here
+#define ROW_MAJOR_ORDER
+//#define COLUMN_MAJOR_ORDER
+
 // An enum that allows us to specify the type of data our matrix will be filled with.
 typedef enum {
     INT,
@@ -53,6 +57,8 @@ Matrix invalidMatrix();
 
 // A create matrix prototype
 Matrix createMatrix(int rows, int cols, DataType data_type);
+
+Matrix createMatrix_legacy(int rows, int cols, DataType data_type);
 
 // A print matrix prototype
 void printMatrix(Matrix mat);
