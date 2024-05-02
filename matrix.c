@@ -3,6 +3,18 @@
 #include <string.h>
 #include "matrix.h"
 
+// I wanted a way to detect for INVALID conditions in my testing, such as
+// attempting to add matricies of incompatible data types or similar.
+// In these error states, I will return a specific "invalid" matrix, and this function
+// is intended to detect these invalid matricies.
+int isValid(const Matrix *mat) {
+    // Verify our matrix isn't null, data isn't null, and our rows and columns are greater than 0.
+    if (mat != NULL && mat->data != NULL && mat->rows > 0 && mat->cols > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
 // Create Matrix Function
 // Accepts an int of rows, an int of columns, and then a data type enum from the header
@@ -372,6 +384,89 @@ Matrix addMatrices(const Matrix *mat1, const Matrix *mat2) {
         }
     }
 
+    return result;
+}
+
+// Function to subtract 2 matricies
+// Accepts two different matrix pointers
+// Returns a matrix
+Matrix subtractMatrices(const Matrix *mat1, const Matrix *mat2) {
+    // Confirm our matricies are the same size, or it won't work.
+    if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
+        printf("Error: Matrices dimensions do not match.\n");
+        exit(EXIT_FAILURE); 
+    }
+
+    // Confirm we hav ethe same data type in each matrix or it won't work
+    if (mat1->data_type != mat2->data_type) {
+        printf("Error: Matrices data types do not match.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Create the new matrix to store the result in
+    Matrix result = createMatrix(mat1->rows, mat1->cols, mat1->data_type);
+
+    // Perform the actual addition
+    for (int i = 0; i < mat1->rows; i++) {
+        for (int j = 0; j < mat1->cols; j++) {
+            switch (mat1->data_type) {
+                case INT:
+                    result.data[i][j].int_val = mat1->data[i][j].int_val - mat2->data[i][j].int_val;
+                    break;
+                case DOUBLE:
+                    result.data[i][j].double_val = mat1->data[i][j].double_val - mat2->data[i][j].double_val;
+                    break;
+                case CHAR:
+                    printf("Error: Subtraction not supported for CHAR type matrices.\n");
+                    exit(EXIT_FAILURE);
+                    break;
+            }
+        }
+    }
+
+    return result;
+}
+
+// Function to multiply two matricies
+// Accepts two different matrix pointers
+// Returns a matrix
+Matrix multiplyMatrices(const Matrix *mat1, const Matrix *mat2) {
+    // Confirm that matrix 1 columns == matrix 2 rows otherwise it won't work.
+    if (mat1->cols != mat2->rows) {
+        printf("Error: Matrix dimensions do not allow multiplication (cols of mat1 must equal rows of mat2).\n");
+        printf("Returning empty matrix to indicate error state.\n");
+        return createMatrix(0,0,INT);
+    }
+
+    // Confirm matching data types, or it won't work.
+    if (mat1->data_type != mat2->data_type) {
+        printf("Error: Data types of matrices do not match.\n");
+        printf("Returning empty matrix to indicate error state.\n");
+        return createMatrix(0,0,INT);
+    }
+
+    // Create the result matrix with the data type from mat1 (which is also the data type of mat2)
+    Matrix result = createMatrix(mat1->rows, mat2->cols, mat1->data_type);
+
+    // Begin multiplication
+    // Iterate over the rows of matrix 1
+    for (int i = 0; i < mat1->rows; i++) {
+
+        // Iterate over the columns in matrix 2
+        for (int j = 0; j < mat2->cols; j++) {
+
+            // Iterate over the columns in matrix 1
+            for (int k = 0; k < mat1->cols; k++) {
+
+                // Add the product of the row/column matches to the result matrix cells
+                if (mat1->data_type == INT) {
+                    result.data[i][j].int_val += mat1->data[i][k].int_val * mat2->data[k][j].int_val;
+                } else if (mat1->data_type == DOUBLE) {
+                    result.data[i][j].double_val += mat1->data[i][k].double_val * mat2->data[k][j].double_val;
+                }
+            }
+        }
+    }
     return result;
 }
 

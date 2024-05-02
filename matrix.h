@@ -31,6 +31,9 @@ typedef struct {
 
 // MARK - Function prototypes
 
+// Detect invalid return matricies
+int isValid(const Matrix *mat);
+
 // A create matrix prototype
 Matrix createMatrix(int rows, int cols, DataType data_type);
 
@@ -63,6 +66,12 @@ MatrixElement* getRowOrColumn(Matrix *mat, RowOrCol roc, int index);
 
 // Add matricies
 Matrix addMatrices(const Matrix *mat1, const Matrix *mat2);
+
+// Subtract matricies
+Matrix subtractMatrices(const Matrix *mat1, const Matrix *mat2);
+
+// Multiply Matricies
+Matrix multiplyMatrices(const Matrix *mat1, const Matrix *mat2);
 
 // Free the memory from a matrix
 void freeMatrix(Matrix *mat);
