@@ -388,7 +388,7 @@ static char * test_resize_matrix_to_zero() {
     mu_assert("TEST FAILED: mat.rows should be 0", mat.rows == 0);
     mu_assert("TEST FAILED: mat.cols should be 0", mat.cols == 0);
 
-    // Check that data should be null or invalid // TODO - MAKE THIS isValid = 0
+    // Check that data should be null or invalid
     mu_assert("TEST FAILED: mat.data should be NULL or invalid", mat.data == NULL || mat.cols == 0);
 
     // Cleanup
@@ -1095,33 +1095,43 @@ static char * all_tests() {
     test_details[0] = '\0'; // Reset the details buffer
 
     // List of tests
+    // Matrix Creation
     mu_run_test(test_create_double_matrix);
     mu_run_test(test_create_int_matrix);
     mu_run_test(test_create_char_matrix);
     
+    // Multiple Operations
     mu_run_test(test_matrix_operations);
     
+    // Setting full rows and columns
     mu_run_test(test_set_row);
     mu_run_test(test_set_column);
     
+    // Subset creations
     mu_run_test(test_create_matrix_subset_complete);
     mu_run_test(test_create_matrix_subset_single_element);
     
+    // Resizing
     mu_run_test(test_resize_matrix_increase);
     mu_run_test(test_resize_matrix_decrease);
     mu_run_test(test_resize_matrix_to_zero);
+
+    // Subset setting
     mu_run_test(test_set_matrix_subset);
     
+    // Matrix Addition
     mu_run_test(test_adding_integer_matrix);
     mu_run_test(test_adding_double_matrix);
     mu_run_test(test_adding_invalid_data_matrix);
     mu_run_test(test_adding_bad_dimensions_matrix);
 
+    // Matrix subtraction
     mu_run_test(test_subtracting_integer_matrix);
     mu_run_test(test_subtracting_double_matrix);
     mu_run_test(test_subtracting_invalid_data_matrix);
     mu_run_test(test_subtracting_bad_dimensions_matrix);
     
+    // Matrix multiplication
     mu_run_test(test_multiplying_integer_matrix);
     mu_run_test(test_multiplying_double_matrix);
     mu_run_test(test_multiplying_invalid_data_matrix);
