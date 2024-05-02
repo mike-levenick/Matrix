@@ -21,6 +21,13 @@ typedef enum {
     ELEMENT
 } Sameness;
 
+// Enum for matrix rotation results
+typedef enum {
+    SUCCESS = 0,
+    ERROR_NULL_POINTER = -1,
+    ERROR_NOT_SQUARE = -2
+} RotationStatus;
+
 // A union to use for our actual elements that will go into the matrix
 typedef union {
     int int_val;
@@ -88,6 +95,9 @@ Matrix deepCopyMatrix(const Matrix *source);
 
 // Check matrix same-ness
 Sameness checkMatrixSameness(const Matrix *mat1, const Matrix *mat2);
+
+// Rotate matrix
+RotationStatus rotateMatrix(Matrix *mat);
 
 // Free the memory from a matrix
 void freeMatrix(Matrix *mat);

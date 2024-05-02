@@ -576,6 +576,43 @@ Sameness checkMatrixSameness(const Matrix *mat1, const Matrix *mat2) {
     return ELEMENT;
 }
 
+// Rotate amatrix 90 clockwise
+// Accepts a matrix pointer
+// Returns void, because our matrix is being rotated in place so no return is needed
+RotationStatus rotateMatrix(Matrix *mat) {
+    if (mat == NULL || mat->data == NULL) {
+        printf("Error: Null matrix or data.\n");
+        return ERROR_NULL_POINTER;
+    }
+    
+    if (mat->rows != mat->cols) {
+        printf("Error: Only square matrices can be rotated in place.\n");
+        return ERROR_NOT_SQUARE;
+    }
+
+    int n = mat->rows;  // The matrix is n x n
+    // Transpose the matrix
+    for (int i = 0; i < n; i++) {
+        for (int j = i; j < n; j++) {
+            // Swap element at (i, j) with element at (j, i)
+            MatrixElement temp = mat->data[i][j];
+            mat->data[i][j] = mat->data[j][i];
+            mat->data[j][i] = temp;
+        }
+    }
+
+    // Reverse each row
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n / 2; j++) {
+            // Swap element at (i, j) with element at (i, n-j-1)
+            MatrixElement temp = mat->data[i][j];
+            mat->data[i][j] = mat->data[i][n - j - 1];
+            mat->data[i][n - j - 1] = temp;
+        }
+    }
+    return SUCCESS;
+}
+
 // Free the memory allocated to a matrix
 void freeMatrix(Matrix *mat) {
     for (int i = 0; i < mat->rows; i++) {
