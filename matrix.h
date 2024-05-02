@@ -34,6 +34,9 @@ typedef struct {
 // Detect invalid return matricies
 int isValid(const Matrix *mat);
 
+// Create the invalid matrix
+Matrix invalidMatrix();
+
 // A create matrix prototype
 Matrix createMatrix(int rows, int cols, DataType data_type);
 
@@ -72,6 +75,9 @@ Matrix subtractMatrices(const Matrix *mat1, const Matrix *mat2);
 
 // Multiply Matricies
 Matrix multiplyMatrices(const Matrix *mat1, const Matrix *mat2);
+
+// Create a deep copy of a matrix
+Matrix deepCopyMatrix(const Matrix *source);
 
 // Free the memory from a matrix
 void freeMatrix(Matrix *mat);

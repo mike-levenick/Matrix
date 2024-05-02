@@ -3,19 +3,6 @@
 #include <string.h>
 #include "matrix.h"
 
-// I wanted a way to detect for INVALID conditions in my testing, such as
-// attempting to add matricies of incompatible data types or similar.
-// In these error states, I will return a specific "invalid" matrix, and this function
-// is intended to detect these invalid matricies.
-int isValid(const Matrix *mat) {
-    // Verify our matrix isn't null, data isn't null, and our rows and columns are greater than 0.
-    if (mat != NULL && mat->data != NULL && mat->rows > 0 && mat->cols > 0) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 // Create Matrix Function
 // Accepts an int of rows, an int of columns, and then a data type enum from the header
 // Returns a matrix
@@ -64,6 +51,25 @@ Matrix createMatrix(int rows, int cols, DataType data_type) {
     }
     // Return the initialized matrix
     return mat;
+}
+
+// I wanted a way to detect for INVALID conditions in my testing, such as
+// attempting to add matricies of incompatible data types or similar.
+// In these error states, I will return a specific "invalid" matrix
+
+// Create a matrix with our pre-determined "invalid" 
+Matrix invalidMatrix() {
+    return createMatrix(0,0,INT);
+}
+
+// Detect our specified "invalid" matrix
+int isValid(const Matrix *mat) {
+    // Verify our matrix isn't null, data isn't null, and our rows and columns are greater than 0.
+    if (mat != NULL && mat->data != NULL && mat->rows > 0 && mat->cols > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 // Print Matrix Function
@@ -355,14 +361,14 @@ Matrix addMatrices(const Matrix *mat1, const Matrix *mat2) {
     if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
         printf("Error: Matrices dimensions do not match.\n");
         printf("Returning empty matrix to indicate error state.\n");
-        return createMatrix(0,0,INT);
+        return invalidMatrix();
     }
 
     // Confirm we hav ethe same data type in each matrix or it won't work
     if (mat1->data_type != mat2->data_type) {
         printf("Error: Matrices data types do not match.\n");
         printf("Returning empty matrix to indicate error state.\n");
-        return createMatrix(0,0,INT);
+        return invalidMatrix();
     }
 
     // Create the new matrix to store the result in
@@ -381,7 +387,7 @@ Matrix addMatrices(const Matrix *mat1, const Matrix *mat2) {
                 case CHAR:
                     printf("Error: Addition not supported for CHAR type matrices.\n");
                     printf("Returning empty matrix to indicate error state.\n");
-                    return createMatrix(0,0,INT);
+                    return invalidMatrix();
                     break;
             }
         }
@@ -398,14 +404,14 @@ Matrix subtractMatrices(const Matrix *mat1, const Matrix *mat2) {
     if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
         printf("Error: Matrices dimensions do not match.\n");
         printf("Returning empty matrix to indicate error state.\n");
-        return createMatrix(0,0,INT);
+        return invalidMatrix();
     }
 
     // Confirm we hav ethe same data type in each matrix or it won't work
     if (mat1->data_type != mat2->data_type) {
         printf("Error: Matrices data types do not match.\n");
         printf("Returning empty matrix to indicate error state.\n");
-        return createMatrix(0,0,INT);
+        return invalidMatrix();
     }
 
     // Create the new matrix to store the result in
@@ -424,7 +430,7 @@ Matrix subtractMatrices(const Matrix *mat1, const Matrix *mat2) {
                 case CHAR:
                     printf("Error: Subtraction not supported for CHAR type matrices.\n");
                     printf("Returning empty matrix to indicate error state.\n");
-                    return createMatrix(0,0,INT);
+                    return invalidMatrix();
             }
         }
     }
@@ -440,14 +446,14 @@ Matrix multiplyMatrices(const Matrix *mat1, const Matrix *mat2) {
     if (mat1->cols != mat2->rows) {
         printf("Error: Matrix dimensions do not allow multiplication (cols of mat1 must equal rows of mat2).\n");
         printf("Returning empty matrix to indicate error state.\n");
-        return createMatrix(0,0,INT);
+        return invalidMatrix();
     }
 
     // Confirm matching data types, or it won't work.
     if (mat1->data_type != mat2->data_type) {
         printf("Error: Data types of matrices do not match.\n");
         printf("Returning empty matrix to indicate error state.\n");
-        return createMatrix(0,0,INT);
+        return invalidMatrix();
     }
 
     // Create the result matrix with the data type from mat1 (which is also the data type of mat2)
@@ -473,6 +479,48 @@ Matrix multiplyMatrices(const Matrix *mat1, const Matrix *mat2) {
         }
     }
     return result;
+}
+
+// Function to creaet a deep copy of a matrix
+// Accepts a matrix pointer
+// Returns a matrix
+Matrix deepCopyMatrix(const Matrix *source) {
+
+    // Make sure we have a valid data source
+    if (!source || !source->data) {
+        printf("Error: Invalid source matrix for copying.\n");
+        return invalidMatrix();
+    }
+
+    // Create a new matrix with the same dimensions and type
+    Matrix copy = createMatrix(source->rows, source->cols, source->data_type);
+
+    // If we fail to copy, return invalid
+    if (!copy.data) {
+        printf("Error: Memory allocation failed for matrix copy.\n");
+        return invalidMatrix();
+    }
+
+    // Once we have a matrix to put stuff in, copy all the data cell by cell
+    // Iterate over rows in the source
+    for (int i = 0; i < source->rows; i++) {
+        // Iterate over columns in the source
+        for (int j = 0; j < source->cols; j++) {
+            switch (source->data_type) {
+                // Copy the data based on type
+                case INT:
+                    copy.data[i][j].int_val = source->data[i][j].int_val;
+                    break;
+                case DOUBLE:
+                    copy.data[i][j].double_val = source->data[i][j].double_val;
+                    break;
+                case CHAR:
+                    copy.data[i][j].char_val = source->data[i][j].char_val;
+                    break;
+            }
+        }
+    }
+    return copy;
 }
 
 // Free the memory allocated to a matrix
