@@ -14,6 +14,13 @@ typedef enum {
     COL
 } RowOrCol;
 
+// Enum for matrix same-ness
+typedef enum {
+    NEITHER,
+    INSTANCE,
+    ELEMENT
+} Sameness;
+
 // A union to use for our actual elements that will go into the matrix
 typedef union {
     int int_val;
@@ -78,6 +85,9 @@ Matrix multiplyMatrices(const Matrix *mat1, const Matrix *mat2);
 
 // Create a deep copy of a matrix
 Matrix deepCopyMatrix(const Matrix *source);
+
+// Check matrix same-ness
+Sameness checkMatrixSameness(const Matrix *mat1, const Matrix *mat2);
 
 // Free the memory from a matrix
 void freeMatrix(Matrix *mat);

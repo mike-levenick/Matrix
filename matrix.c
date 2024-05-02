@@ -523,6 +523,59 @@ Matrix deepCopyMatrix(const Matrix *source) {
     return copy;
 }
 
+// Function to check for matrix same-ness
+// Accepts two matrix pointers
+// Returns an enum of "Sameness" with values "INSTANCE" "ELEMENT" or "NEITHER".
+Sameness checkMatrixSameness(const Matrix *mat1, const Matrix *mat2) {
+    // Check if both matrices are the same instance
+    if (mat1 == mat2) {
+        return INSTANCE;
+    }
+
+    // Check if both matricies are null
+    if (mat1 == NULL && mat2 == NULL) {
+        return ELEMENT;
+    // Check if only one matrix is null so we can exit early
+    } else if (mat1 == NULL || mat2 == NULL) {
+        return NEITHER;
+    }
+
+    // Check dimensions and type before comparing elements, so we can exit early
+    if (mat1->rows != mat2->rows || mat1->cols != mat2->cols || mat1->data_type != mat2->data_type) {
+        return NEITHER;
+    }
+
+    // Element-wise comparison
+
+    // Iterate over rows
+    for (int i = 0; i < mat1->rows; i++) {
+        // Iterate over columns
+        for (int j = 0; j < mat1->cols; j++) {
+            // Compare based on data types, exiting as soon as we see a != to save cycles
+            switch (mat1->data_type) {
+                case INT:
+                    if (mat1->data[i][j].int_val != mat2->data[i][j].int_val) {
+                        return NEITHER;
+                    }
+                    break;
+                case DOUBLE:
+                    if (mat1->data[i][j].double_val != mat2->data[i][j].double_val) {
+                        return NEITHER;
+                    }
+                    break;
+                case CHAR:
+                    if (mat1->data[i][j].char_val != mat2->data[i][j].char_val) {
+                        return NEITHER;
+                    }
+                    break;
+            }
+        }
+    }
+
+    // If we get here, all elements are the same, but the matricies are not the same instance
+    return ELEMENT;
+}
+
 // Free the memory allocated to a matrix
 void freeMatrix(Matrix *mat) {
     for (int i = 0; i < mat->rows; i++) {
