@@ -777,6 +777,106 @@ static char * test_subtracting_double_matrix() {
     return NULL;
 }
 
+// Invalid Data Types
+static char * test_subtracting_invalid_data_matrix() {
+    // Intro output
+    const char *functionName = "Subtract Matrix - Invalid Data Types";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 4x4 matrix filled with doubles
+    Matrix mat1 = createMatrix(4, 4, DOUBLE);
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat1.data[r][c].double_val = (double)r * 4 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat1);
+
+    // Create a 4x4 matrix filled with Ints
+    Matrix mat2 = createMatrix(4, 4, INT);
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat2.data[r][c].int_val = r * 4 + c;
+        }
+    }
+
+    printf("Initial matrix 2:\n");
+    printMatrix(mat2);
+
+    // When
+    // Add the two matricies together
+    Matrix matResult = subtractMatrices(&mat1, &mat2);
+
+    // Then
+    printf("Resulting matrix after addition:\n");
+    printMatrix(matResult);
+    
+    // Matrix should be invalid
+    mu_assert("TEST FAILED: matrix should be invalid", isValid(&matResult) == 0);
+
+    // Cleanup
+    freeMatrix(&mat1);
+    freeMatrix(&mat2);
+    freeMatrix(&matResult);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n", functionName);
+    return NULL;
+}
+
+// Incompatible Dimensions
+static char * test_subtracting_bad_dimensions_matrix() {
+    // Intro output
+    const char *functionName = "Subtract Matrix - Incompatible Dimensions";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 4x4 matrix filled with ints
+    Matrix mat1 = createMatrix(4, 4, INT);
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat1.data[r][c].int_val = r * 4 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat1);
+
+    // Create a 2x2 matrix filled with Ints
+    Matrix mat2 = createMatrix(2, 2, INT);
+    for (int r = 0; r < 2; r++) {
+        for (int c = 0; c < 2; c++) {
+            mat2.data[r][c].int_val = r * 2 + c;
+        }
+    }
+
+    printf("Initial matrix 2:\n");
+    printMatrix(mat2);
+
+    // When
+    // Add the two matricies together
+    Matrix matResult = subtractMatrices(&mat1, &mat2);
+
+    // Then
+    printf("Resulting matrix after addition:\n");
+    printMatrix(matResult);
+    
+    // Matrix should be invalid
+    mu_assert("TEST FAILED: matrix should be invalid", isValid(&matResult) == 0);
+
+    // Cleanup
+    freeMatrix(&mat1);
+    freeMatrix(&mat2);
+    freeMatrix(&matResult);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n", functionName);
+    return NULL;
+}
+
 // Matrix Multiplication
 // Integer
 static char * test_multiplying_integer_matrix() {
@@ -1019,6 +1119,8 @@ static char * all_tests() {
 
     mu_run_test(test_subtracting_integer_matrix);
     mu_run_test(test_subtracting_double_matrix);
+    mu_run_test(test_subtracting_invalid_data_matrix);
+    mu_run_test(test_subtracting_bad_dimensions_matrix);
     
     mu_run_test(test_multiplying_integer_matrix);
     mu_run_test(test_multiplying_double_matrix);
