@@ -354,13 +354,15 @@ Matrix addMatrices(const Matrix *mat1, const Matrix *mat2) {
     // Confirm our matricies are the same size, or it won't work.
     if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
         printf("Error: Matrices dimensions do not match.\n");
-        exit(EXIT_FAILURE); 
+        printf("Returning empty matrix to indicate error state.\n");
+        return createMatrix(0,0,INT);
     }
 
     // Confirm we hav ethe same data type in each matrix or it won't work
     if (mat1->data_type != mat2->data_type) {
         printf("Error: Matrices data types do not match.\n");
-        exit(EXIT_FAILURE);
+        printf("Returning empty matrix to indicate error state.\n");
+        return createMatrix(0,0,INT);
     }
 
     // Create the new matrix to store the result in
@@ -378,7 +380,8 @@ Matrix addMatrices(const Matrix *mat1, const Matrix *mat2) {
                     break;
                 case CHAR:
                     printf("Error: Addition not supported for CHAR type matrices.\n");
-                    exit(EXIT_FAILURE);
+                    printf("Returning empty matrix to indicate error state.\n");
+                    return createMatrix(0,0,INT);
                     break;
             }
         }
@@ -394,13 +397,15 @@ Matrix subtractMatrices(const Matrix *mat1, const Matrix *mat2) {
     // Confirm our matricies are the same size, or it won't work.
     if (mat1->rows != mat2->rows || mat1->cols != mat2->cols) {
         printf("Error: Matrices dimensions do not match.\n");
-        exit(EXIT_FAILURE); 
+        printf("Returning empty matrix to indicate error state.\n");
+        return createMatrix(0,0,INT);
     }
 
     // Confirm we hav ethe same data type in each matrix or it won't work
     if (mat1->data_type != mat2->data_type) {
         printf("Error: Matrices data types do not match.\n");
-        exit(EXIT_FAILURE);
+        printf("Returning empty matrix to indicate error state.\n");
+        return createMatrix(0,0,INT);
     }
 
     // Create the new matrix to store the result in
@@ -418,8 +423,8 @@ Matrix subtractMatrices(const Matrix *mat1, const Matrix *mat2) {
                     break;
                 case CHAR:
                     printf("Error: Subtraction not supported for CHAR type matrices.\n");
-                    exit(EXIT_FAILURE);
-                    break;
+                    printf("Returning empty matrix to indicate error state.\n");
+                    return createMatrix(0,0,INT);
             }
         }
     }
