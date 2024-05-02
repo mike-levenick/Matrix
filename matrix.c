@@ -6,54 +6,6 @@
 // Create Matrix Function
 // Accepts an int of rows, an int of columns, and then a data type enum from the header
 // Returns a matrix
-Matrix createMatrix_legacy(int rows, int cols, DataType data_type) {
-    Matrix mat;
-    mat.rows = rows;
-    mat.cols = cols;
-    mat.data_type = data_type;
-
-    // Memory Allocation
-    // Allocate memory for the rows.
-    mat.data = (MatrixElement **)malloc(rows * sizeof(MatrixElement *));
-
-    // Allocate memory for each set of columns within the rows.
-    for (int i = 0; i < rows; i++) {
-        mat.data[i] = (MatrixElement *)malloc(cols * sizeof(MatrixElement));
-    }
-
-    // Initialize matrix with zeros for doubles and integers, and null characters for chars
-    // Iterate over rows
-    for (int r = 0; r < rows; r++) {
-
-        // Iterate over columns
-        for (int c = 0; c < cols; c++) {
-
-            // Switch case based on the specified data type enum
-            switch (data_type) {
-                // Initialize with 0s if it's an INT
-                case INT:
-                    mat.data[r][c].int_val = 0;
-                    break;
-
-                // Initialize with 0.0s if it's a DOUBLE
-                case DOUBLE:
-                    mat.data[r][c].double_val = 0.0;
-                    break;
-
-                // Initialize with NULL values if it's full of CHARs
-                case CHAR:
-                    mat.data[r][c].char_val = '\0';
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-    // Return the initialized matrix
-    return mat;
-}
-
-// create 2
 Matrix createMatrix(int rows, int cols, DataType data_type) {
     Matrix mat;
     mat.rows = rows;

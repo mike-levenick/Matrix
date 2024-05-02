@@ -1,7 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-// Choose row or column major order here
+// Choose row or column major order here. 
+// One of these MUST be uncommented.
 #define ROW_MAJOR_ORDER
 //#define COLUMN_MAJOR_ORDER
 
@@ -57,8 +58,6 @@ Matrix invalidMatrix();
 
 // A create matrix prototype
 Matrix createMatrix(int rows, int cols, DataType data_type);
-
-Matrix createMatrix_legacy(int rows, int cols, DataType data_type);
 
 // A print matrix prototype
 void printMatrix(Matrix mat);
