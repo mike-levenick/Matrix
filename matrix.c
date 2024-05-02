@@ -167,25 +167,35 @@ void getMatrixDimensions(Matrix mat, int *rows, int *cols) {
 // Accepts a matrix pointer, a column int, a row int, and a matrix element
 // Returns void
 void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
-
-    // Check if the row and column indices are within the bounds of the matrix
     #ifdef ENABLE_BOUNDS_CHECK
+    // Bounds checking needs to account for storage order
+    #ifdef ROW_MAJOR_ORDER
     if (row < 0 || row >= mat->rows || col < 0 || col >= mat->cols) {
+    #elif defined(COLUMN_MAJOR_ORDER)
+    if (col < 0 || col >= mat->rows || row < 0 || row >= mat->cols) {
+    #endif
         printf("Error: Index out of bounds\n");
-        return; 
+        return;
     }
     #endif
 
     // Assign the provided data to the specified location in the matrix
+    // Use preprocessor directives to handle storage orders
+    #ifdef ROW_MAJOR_ORDER
+    int targetRow = row, targetCol = col;
+    #elif defined(COLUMN_MAJOR_ORDER)
+    int targetRow = col, targetCol = row;
+    #endif
+
     switch (mat->data_type) {
         case INT:
-            mat->data[row][col].int_val = data.int_val;
+            mat->data[targetRow][targetCol].int_val = data.int_val;
             break;
         case DOUBLE:
-            mat->data[row][col].double_val = data.double_val;
+            mat->data[targetRow][targetCol].double_val = data.double_val;
             break;
         case CHAR:
-            mat->data[row][col].char_val = data.char_val;
+            mat->data[targetRow][targetCol].char_val = data.char_val;
             break;
         default:
             printf("Error: Unknown data type\n");
@@ -199,30 +209,55 @@ void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
 void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement *elements, int numElements) {
     // Bounds checks which can be disabled
     #ifdef ENABLE_BOUNDS_CHECK
+    // Adjust the bounds check based on storage order
+    #ifdef ROW_MAJOR_ORDER
     if ((roc == ROW && (index < 0 || index >= mat->rows)) || 
         (roc == COL && (index < 0 || index >= mat->cols))) {
         printf("Error: Index out of bounds\n");
         return;
     }
+    #elif defined(COLUMN_MAJOR_ORDER)
+    if ((roc == ROW && (index < 0 || index >= mat->cols)) || 
+        (roc == COL && (index < 0 || index >= mat->rows))) {
+        printf("Error: Index out of bounds\n");
+        return;
+    }
+    #endif
     #endif
 
     // Check if we provided enough elements
+    #ifdef ROW_MAJOR_ORDER
     int count = (roc == ROW) ? mat->cols : mat->rows;
+    #elif defined(COLUMN_MAJOR_ORDER)
+    int count = (roc == ROW) ? mat->rows : mat->cols;
+    #endif
     if (numElements < count) {
         printf("Error: Not enough elements provided\n");
         return;
     }
 
     // Add the elements if everything is good
+    #ifdef ROW_MAJOR_ORDER
     if (roc == ROW) {
         for (int col = 0; col < mat->cols; col++) {
             setMatrixElement(mat, index, col, elements[col]);
         }
-    } else {
+    } else {  // roc == COL
         for (int row = 0; row < mat->rows; row++) {
             setMatrixElement(mat, row, index, elements[row]);
         }
     }
+    #elif defined(COLUMN_MAJOR_ORDER)
+    if (roc == ROW) {
+        for (int row = 0; row < mat->rows; row++) {
+            setMatrixElement(mat, row, index, elements[row]);
+        }
+    } else {  // roc == COL
+        for (int col = 0; col < mat->cols; col++) {
+            setMatrixElement(mat, index, col, elements[col]);
+        }
+    }
+    #endif
 }
 
 // Create a matrix from a subset of a larger matrix
@@ -347,7 +382,11 @@ MatrixElement getMatrixElement(Matrix mat, int row, int col) {
     }
     #endif
 
-    return mat.data[row][col];
+    #ifdef ROW_MAJOR_ORDER
+    return mat.data[row][col];  // Access element in row-major order
+    #elif defined(COLUMN_MAJOR_ORDER)
+    return mat.data[col][row];  // Access element in column-major order
+    #endif
 }
 
 // Get a row or column in the matrix
