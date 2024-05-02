@@ -580,7 +580,7 @@ Sameness checkMatrixSameness(const Matrix *mat1, const Matrix *mat2) {
 // Accepts a matrix pointer
 // Returns void, because our matrix is being rotated in place so no return is needed
 RotationStatus rotateMatrix(Matrix *mat) {
-    if (mat == NULL || mat->data == NULL) {
+    if (mat == NULL || mat->data == NULL || mat->rows == 0 || mat->cols == 0) {
         printf("Error: Null matrix or data.\n");
         return ERROR_NULL_POINTER;
     }
