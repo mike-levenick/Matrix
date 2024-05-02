@@ -261,7 +261,7 @@ void setMatrixSubset(Matrix *sourceMat, Matrix *destMat, int startRow, int start
     #ifdef ENABLE_BOUNDS_CHECK
     if (startRow < 0 || startRow + sourceMat->rows > destMat->rows ||
         startCol < 0 || startCol + sourceMat->cols > destMat->cols) {
-        fprintf(stderr, "Error: Source matrix does not fit within the destination matrix at the specified start indices.\n");
+        printf("Error: Source matrix does not fit within the destination matrix at the specified start indices.\n");
         return;
     }
     #endif
