@@ -32,7 +32,7 @@ static char * test_create_double_matrix() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -60,7 +60,7 @@ static char * test_create_int_matrix() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -88,7 +88,7 @@ static char * test_create_char_matrix() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -122,7 +122,7 @@ static char * test_matrix_operations() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -159,7 +159,7 @@ static char * test_set_row() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -194,7 +194,7 @@ static char* test_set_column() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -241,7 +241,7 @@ static char * test_create_matrix_subset_complete() {
     freeMatrix(&subset);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -279,7 +279,7 @@ static char * test_create_matrix_subset_single_element() {
     freeMatrix(&subset);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -322,7 +322,7 @@ static char * test_resize_matrix_increase() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -359,7 +359,7 @@ static char * test_resize_matrix_decrease() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -395,7 +395,7 @@ static char * test_resize_matrix_to_zero() {
     freeMatrix(&mat);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -446,7 +446,7 @@ static char * test_set_matrix_subset() {
     freeMatrix(&sourceMat);
     
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -504,7 +504,7 @@ static char * test_adding_integer_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -560,7 +560,7 @@ static char * test_adding_double_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -610,7 +610,7 @@ static char * test_adding_invalid_data_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -660,7 +660,7 @@ static char * test_adding_bad_dimensions_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -717,7 +717,7 @@ static char * test_subtracting_integer_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -773,7 +773,7 @@ static char * test_subtracting_double_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -823,7 +823,7 @@ static char * test_subtracting_invalid_data_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -873,7 +873,7 @@ static char * test_subtracting_bad_dimensions_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -930,7 +930,7 @@ static char * test_multiplying_integer_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -986,7 +986,7 @@ static char * test_multiplying_double_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -1023,10 +1023,10 @@ static char * test_multiplying_invalid_data_matrix() {
     // Multipy them together
     Matrix matResult = multiplyMatrices(&mat1, &mat2);
 
+    // Then
     printf("Resulting matrix after multiplication:\n");
     printMatrix(matResult);
 
-    // Then
     // Matrix should be invalid
     mu_assert("TEST FAILED: matrix should be invalid", isValid(&matResult) == 0);
 
@@ -1036,7 +1036,7 @@ static char * test_multiplying_invalid_data_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -1073,10 +1073,10 @@ static char * test_multiplying_bad_dimensions_matrix() {
     // Multipy them together
     Matrix matResult = multiplyMatrices(&mat1, &mat2);
 
+    // Then
     printf("Resulting matrix after multiplication:\n");
     printMatrix(matResult);
 
-    // Then
     // Matrix should be invalid
     mu_assert("TEST FAILED: matrix should be invalid", isValid(&matResult) == 0);
 
@@ -1086,7 +1086,171 @@ static char * test_multiplying_bad_dimensions_matrix() {
     freeMatrix(&matResult);
 
     // Success output
-    printf("*** TEST PASSED: %s ***\n", functionName);
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Deep Copy Matrix tests
+// Valid 3x3 INT
+static char * test_deep_copy_int_matrix() {
+    // Intro output
+    const char *functionName = "Deep Copy - Valid INTs";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with INTs
+    Matrix mat = createMatrix(3, 3, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mat.data[r][c].int_val = r * 3 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat);
+
+    // When
+    // Deep copy the Matrix
+    Matrix deepCopy = deepCopyMatrix(&mat);
+
+    // Then
+    printf("Resulting matrix after DEEP COPY:\n");
+    printMatrix(deepCopy);
+
+    // Check row and column count
+    mu_assert("TEST FAILED: Matrix should have 3 rows", deepCopy.rows == 3);
+    mu_assert("TEST FAILED: Matrix should have 3 columns", deepCopy.cols == 3);
+
+    // Check a couple random cells
+    mu_assert("TEST FAILED: Cell 0,0 should have value 0", deepCopy.data[0][0].int_val == 0);
+    mu_assert("TEST FAILED: Cell 1,1 should have value 4", deepCopy.data[1][1].int_val == 4);
+
+    // Cleanup
+    freeMatrix(&mat);
+    freeMatrix(&deepCopy);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Valid Doubles
+static char * test_deep_copy_double_matrix() {
+    // Intro output
+    const char *functionName = "Deep Copy - Valid DOUBLEs";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with DOUBLEs
+    Matrix mat = createMatrix(3, 3, DOUBLE);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mat.data[r][c].double_val = (double)r * 3 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat);
+
+    // When
+    // Deep copy the Matrix
+    Matrix deepCopy = deepCopyMatrix(&mat);
+
+    // Then
+    printf("Resulting matrix after DEEP COPY:\n");
+    printMatrix(deepCopy);
+
+    // Check row and column count
+    mu_assert("TEST FAILED: Matrix should have 3 rows", deepCopy.rows == 3);
+    mu_assert("TEST FAILED: Matrix should have 3 columns", deepCopy.cols == 3);
+
+    // Check a couple random cells
+    mu_assert("TEST FAILED: Cell 0,0 should have value 0", deepCopy.data[0][0].double_val == 0.0);
+    mu_assert("TEST FAILED: Cell 1,1 should have value 4", deepCopy.data[1][1].double_val == 4.0);
+
+    // Cleanup
+    freeMatrix(&mat);
+    freeMatrix(&deepCopy);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Valid CHAR
+static char * test_deep_copy_char_matrix() {
+    // Intro output
+    const char *functionName = "Deep Copy - Valid CHARs";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with CHARs
+    Matrix mat = createMatrix(3, 3, CHAR);
+    for (int r = 0; r < 3; r++) {
+        mat.data[r][0].char_val = 'A';
+        mat.data[r][1].char_val = 'B';
+        mat.data[r][2].char_val = 'C';
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat);
+
+    // When
+    // Deep copy the Matrix
+    Matrix deepCopy = deepCopyMatrix(&mat);
+
+    // Then
+    printf("Resulting matrix after DEEP COPY:\n");
+    printMatrix(deepCopy);
+
+    // Check row and column count
+    mu_assert("TEST FAILED: Matrix should have 3 rows", deepCopy.rows == 3);
+    mu_assert("TEST FAILED: Matrix should have 3 columns", deepCopy.cols == 3);
+
+    // Check a couple random cells
+    mu_assert("TEST FAILED: Cell 0,0 should have value A", deepCopy.data[0][0].char_val == 'A');
+    mu_assert("TEST FAILED: Cell 1,1 should have value B", deepCopy.data[1][1].char_val == 'B');
+    mu_assert("TEST FAILED: Cell 2,2 should have value C", deepCopy.data[2][2].char_val == 'C');
+
+    // Cleanup
+    freeMatrix(&mat);
+    freeMatrix(&deepCopy);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Invalid Data
+static char * test_deep_copy_invalid_matrix() {
+    // Intro output
+    const char *functionName = "Deep Copy - Invalid";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with CHARs
+    Matrix mat = invalidMatrix();
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat);
+
+    // When
+    // Deep copy the Matrix
+    Matrix deepCopy = deepCopyMatrix(&mat);
+
+    // Then
+    printf("Resulting matrix after DEEP COPY:\n");
+    printMatrix(deepCopy);
+
+    // Matrix should be invalid
+    mu_assert("TEST FAILED: matrix should be invalid", isValid(&deepCopy) == 0);
+
+    // Cleanup
+    freeMatrix(&mat);
+    freeMatrix(&deepCopy);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
     return NULL;
 }
 
@@ -1136,6 +1300,13 @@ static char * all_tests() {
     mu_run_test(test_multiplying_double_matrix);
     mu_run_test(test_multiplying_invalid_data_matrix);
     mu_run_test(test_multiplying_bad_dimensions_matrix);
+
+    // Deep Copy Matrix
+    mu_run_test(test_deep_copy_int_matrix);
+    mu_run_test(test_deep_copy_double_matrix);
+    mu_run_test(test_deep_copy_char_matrix);
+    mu_run_test(test_deep_copy_invalid_matrix);
+
     return 0;
 }
 
