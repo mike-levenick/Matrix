@@ -1326,7 +1326,7 @@ static char * test_sameness_element_matrix() {
     Sameness checkSame = checkMatrixSameness(&mat1, &mat2);
 
     // Then
-    // Should be the same instance
+    // Should be the same element-wise
     mu_assert("TEST FAILED: Matricies should be element-wise same.", checkSame = ELEMENT);
 
     // Cleanup
@@ -1374,12 +1374,118 @@ static char * test_sameness_neither_matrix() {
     Sameness checkSame = checkMatrixSameness(&mat1, &mat2);
 
     // Then
-    // Should be the same instance
+    // Should not be the same either way
     mu_assert("TEST FAILED: Matricies should not be the same.", checkSame == NEITHER);
 
     // Cleanup
     freeMatrix(&mat1);
     freeMatrix(&mat2);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Test Matrix Rotation
+// Non-Square
+static char * test_rotate_nonsquare_matrix() {
+    // Intro output
+    const char *functionName = "Rotation - Non-Square";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x4 matrix filled with INTs
+    Matrix mat = createMatrix(3, 4, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 4; c++) {
+            mat.data[r][c].int_val = r * 4 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat);
+
+    // When
+    // Rotate it 90*
+    RotationStatus status = rotateMatrix(&mat);
+
+    // Then
+    // Should error not square
+    mu_assert("TEST FAILED: Should return not square error.", status == ERROR_NOT_SQUARE);
+
+    // Cleanup
+    freeMatrix(&mat);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Invalid Data
+static char * test_rotate_invalid_matrix() {
+    // Intro output
+    const char *functionName = "Rotation - Invalid Data";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create an invalid matrix
+    Matrix mat = invalidMatrix();
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat);
+
+    // When
+    // Rotate it 90*
+    RotationStatus status = rotateMatrix(&mat);
+
+    // Then
+    // Should error null pointer
+    mu_assert("TEST FAILED: Should return invalid data error.", status == ERROR_NULL_POINTER);
+
+    // Cleanup
+    freeMatrix(&mat);
+
+    // Success output
+    printf("*** TEST PASSED: %s ***\n\n", functionName);
+    return NULL;
+}
+
+// Valid INT Data
+static char * test_rotate_valid_int_matrix() {
+    // Intro output
+    const char *functionName = "Rotation - Valid INT";
+    printf("*** TEST START: %s ***\n", functionName);
+
+    // Given
+    // Create a 3x3 matrix filled with INTs
+    Matrix mat = createMatrix(3, 3, INT);
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            mat.data[r][c].int_val = r * 3 + c;
+        }
+    }
+
+    printf("Initial matrix 1:\n");
+    printMatrix(mat);
+
+    // When
+    // Rotate it 90*
+    RotationStatus status = rotateMatrix(&mat);
+
+    // Then
+    printf("Post Rotation:\n");
+    printMatrix(mat);
+
+    // Should succeed
+    mu_assert("TEST FAILED: Should return invalid data error.", status == SUCCESS);
+
+    // Check a few random cells
+    mu_assert("TEST FAILED: Cell 0,0 should have value 6", mat.data[0][0].int_val == 6);
+    mu_assert("TEST FAILED: Cell 1,1 should have value 4", mat.data[1][1].int_val == 4); // This element doesn't move
+    mu_assert("TEST FAILED: Cell 0,2 should have value 0", mat.data[0][2].int_val == 0);
+
+    // Cleanup
+    freeMatrix(&mat);
 
     // Success output
     printf("*** TEST PASSED: %s ***\n\n", functionName);
@@ -1443,6 +1549,11 @@ static char * all_tests() {
     mu_run_test(test_sameness_instance_matrix);
     mu_run_test(test_sameness_element_matrix);
     mu_run_test(test_sameness_neither_matrix);
+
+    // Rotation
+    mu_run_test(test_rotate_nonsquare_matrix);
+    mu_run_test(test_rotate_invalid_matrix);
+    mu_run_test(test_rotate_valid_int_matrix);
 
     return 0;
 }
