@@ -7,11 +7,14 @@
 // Accepts an int of rows, an int of columns, and then a data type enum from the header
 // Returns a matrix
 Matrix createMatrix(int rows, int cols, DataType data_type) {
+
+    // Declare a matrix with its rows, columns, and data types from parameters
     Matrix mat;
     mat.rows = rows;
     mat.cols = cols;
     mat.data_type = data_type;
 
+    // Set storage order based on definition
     #ifdef ROW_MAJOR_ORDER
     int primaryDim = rows;
     int secondaryDim = cols;
@@ -24,16 +27,20 @@ Matrix createMatrix(int rows, int cols, DataType data_type) {
     // Allocate memory for the 'rows' which might represent actual rows or columns based on the storage order
     mat.data = (MatrixElement **)malloc(primaryDim * sizeof(MatrixElement *));
 
+    // Exit if we fail to allocate
     if (mat.data == NULL) {
-        fprintf(stderr, "Memory allocation failed for matrix rows\n");
+        printf("Memory allocation failed for matrix rows\n");
         exit(EXIT_FAILURE);
     }
 
-    // Allocate memory for each 'row' which could be a row or a column of elements
+    // Allocate memory for each 'row' which could be a row or a column of elements pending storage order
+    // Iterate over primary dimension and add the secondary dimensions
     for (int i = 0; i < primaryDim; i++) {
         mat.data[i] = (MatrixElement *)malloc(secondaryDim * sizeof(MatrixElement));
+        
+        // If we don't have data, memory allocation failed
         if (!mat.data[i]) {
-            fprintf(stderr, "Memory allocation failed for matrix columns at row %d\n", i);
+            printf("Memory allocation failed for matrix columns at row %d\n", i);
             // Free previously allocated memory to avoid leaks
             for (int j = 0; j < i; j++) {
                 free(mat.data[j]);
@@ -42,9 +49,9 @@ Matrix createMatrix(int rows, int cols, DataType data_type) {
             exit(EXIT_FAILURE);
         }
 
-        // Initialize elements to default values
+        // Initialize elements to default values, pending data type either all 0 bytes, or 0.0 for doubles
         if (data_type == INT || data_type == CHAR) {
-            memset(mat.data[i], 0, cols * sizeof(MatrixElement));  // Set all bytes to 0
+            memset(mat.data[i], 0, cols * sizeof(MatrixElement));
         } else if (data_type == DOUBLE) {
             for (int c = 0; c < cols; c++) {
                 mat.data[i][c].double_val = 0.0;
@@ -52,12 +59,14 @@ Matrix createMatrix(int rows, int cols, DataType data_type) {
         }
     }
 
+    // Return the resulting matrix
     return mat;
 }
 
 // I wanted a way to detect for INVALID conditions in my testing, such as
 // attempting to add matricies of incompatible data types or similar.
 // In these error states, I will return a specific "invalid" matrix
+// There is also a function to detect this specific "invalid" matrix
 
 // Create a matrix with our pre-determined "invalid" 
 Matrix invalidMatrix() {
@@ -98,7 +107,6 @@ void printMatrix(Matrix mat) {
                     printf("%c\t", mat.data[r][c].char_val);
                     break;
                 default:
-                    // TODO - Better error handling?
                     printf("Unknown data type\t");
             }
         }
@@ -132,7 +140,6 @@ void setMatrixElement(Matrix *mat, int row, int col, MatrixElement data) {
     #endif
 
     // Assign the provided data to the specified location in the matrix
-    // Use preprocessor directives to handle storage orders
     #ifdef ROW_MAJOR_ORDER
     int targetRow = row, targetCol = col;
     #elif defined(COLUMN_MAJOR_ORDER)
@@ -194,7 +201,7 @@ void setRowOrColumn(Matrix *mat, int index, RowOrCol roc, MatrixElement *element
         for (int col = 0; col < mat->cols; col++) {
             setMatrixElement(mat, index, col, elements[col]);
         }
-    } else {  // roc == COL
+    } else {
         for (int row = 0; row < mat->rows; row++) {
             setMatrixElement(mat, row, index, elements[row]);
         }
