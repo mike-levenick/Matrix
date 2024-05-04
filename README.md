@@ -114,23 +114,24 @@ freeMatrix(&matResult);
 ### Functions List
 
 
-| Function Name       | Return | Parameters | Special Notes |
-|---------------------|----------|----------| ---------|
-| createMatrix        | `Matrix` | `int rows, int cols, DataType data_type` | Row1Col3 | 
-| printMatrix         | Row2Col2 | Row2Col3 |
-| getMatrixDimensions | Row3Col2 | Row3Col3 |
-| setMatrixElement    | Row3Col2 | Row3Col3 |
-| setRowOrColumn      | Row3Col2 | Row3Col3 |
-| createMatrixSubset  | Row3Col2 | Row3Col3 |
-| resizeMatrix        | Row3Col2 | Row3Col3 |
-| setMatrixSubset     | Row3Col2 | Row3Col3 |
-| getMatrixElement    | Row3Col2 | Row3Col3 |
-| getRowOrColumn      | Row3Col2 | Row3Col3 |
-| addMatrices         | Row3Col2 | Row3Col3 |
-| subtractMatrices    | Row3Col2 | Row3Col3 |
-| multiplyMatrices    | Row3Col2 | Row3Col3 |
-| checkMatrixSameness | Row3Col2 | Row3Col3 |
-| rotateMatrix        | Row3Col2 | Row3Col3 |
-| freeMatrix          | Row3Col2 | Row3Col3 |
-
-
+| Function Name       | Return           | Parameters | Usage Notes |
+|---------------------|------------------|------------| ---------|
+| createMatrix        | `Matrix`         | `int rows, int cols, DataType data_type` | Create and return a matrix of given dimensions 
+| printMatrix         | `void`           | `Matrix mat` | Print the contents of a given matrix to stdout
+| getMatrixDimensions | `void`           | `Matrix mat, int *rows, int *cols` | Get the dimensions of a matrix. Does not return, but instead stores the values in return parameters `*rows` and `*cols`
+| setMatrixElement    | `void`           | `Matrix *mat, int row, int col, MatrixElement data` | Set a specified element of a matrix to the provided MatrixElement
+| setRowOrColumn      | `void`           | `Matrix *mat, int index, RowOrCol roc, MatrixElement *elements, int numElements` | Set an entire row or column at once
+| createMatrixSubset  | `Matrix`         | `Matrix original, int startRow, int endRow, int startCol, int endCol` | Create a new, smaller matrix from a specified subset of another larger matrix
+| resizeMatrix        | `void`           | `Matrix *mat, int newRows, int newCols` | Resize a given matrix to the provided dimensions
+| setMatrixSubset     | `void`           | `Matrix *sourceMat, Matrix *destMat, int startRow, int startCol` | Set a subset within a matrix to that of another matrix
+| getMatrixElement    | `MatrixElement`  | `Matrix mat, int row, int col` | Get a specific element from a matrix and return it
+| getRowOrColumn      | `MatrixElement*` | `Matrix *mat, RowOrCol roc, int index` | Get the entire contents of a row or column of a matrix
+| addMatrices         | `Matrix`         | `const Matrix *mat1, const Matrix *mat2` | Add two matricies together and return a 3rd matrix with the results
+| subtractMatrices    | `Matrix`         | `const Matrix *mat1, const Matrix *mat2` | Subtract two matricies and return a 3rd matrix with the results
+| multiplyMatrices    | `Matrix`         | `const Matrix *mat1, const Matrix *mat2` | Multiply two matricies and return a 3rd matrix with the results
+| deepCopyMatrix      | `Matrix`         | `const Matrix *source` | Create a "deep copy" (element-by-element copy) of a given matrix, and return it
+| checkMatrixSameness | `Sameness`       | `const Matrix *mat1, const Matrix *mat2` | Check if two matricies are identical instances, element-by-element identical, or not the same at all
+| rotateMatrix        | `RotationStatus` | `Matrix *mat` | Rotate a matrix in place. Requires the provided matrix to be square and non-empty
+| freeMatrix          | `void`           | `Matrix *mat` | Free a given matrix. 🙋 I will always free memory that I allocate
+| isValid             | `int`            | `const Matrix *mat` | Returns whether or not a matrix is valid. This is primarily used in the tests
+| invalidMatrix       | `Matrix`         | None | Create an invalid matrix, also primarily used in the tests. The resulting matrix will have no rows or columns
