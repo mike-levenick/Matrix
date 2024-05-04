@@ -73,10 +73,50 @@ freeMatrix(&mat2);
 freeMatrix(&matResult);
 ```
 
+### Structures and their Enums
+
+`DataType`: an enum for tracking what type of data is stored in a given matrix.
+
+* `INT` (the matrix contains integers)
+* `DOUBLE` (the matrix contains doubles)
+* `CHAR` (the matrix contains characters)
+
+`RowOrCol`: an enum for tracking whether a row/column-wise function will operate on the row or on the column.
+
+* `ROW` (the function should operate on the row)
+* `COL` (the function should operate on the column)
+
+`Sameness`: an enum used for a return type in a matrix-comparison function to determine the type of sameness the matricies exhibit.
+
+* `NEITHER` (indicating the two matricies are completely different)
+* `INSTANCE` (indicating instance-wise sameness)
+* `ELEMENT` (indicating the matricies are different instances, but are identical on an element-by-element basis)
+
+`RotationStatus`: an enum used as a return type in a matrix-rotating function to alert as to the success or failure of the matrix rotation
+
+* `SUCCESS` (Value = 0. This indicates the matrix rotation was successful)
+* `ERROR_NULL_POINTER` (Value = -1. This indicates the matrix rotation failed due to null values or a lack of rows/columns in a matrix)
+* `ERROR_NOT_SQUARE` (Value = -2. Because rotating a matrix in-place requires that matrix to be square, this returns if it is not)
+
+`MatrixElement`: A `union` used for the elements within the matricies to hold their values, depending on the data types
+
+* `int_val`: The `integer` value of the element in the matrix
+* `double_val`: The `double` value of the element in the matrix
+* `char_val`: The `char` value of the element in the matrix
+
+`Matrix`: The `struct` that holds the actual matricies that the library will operate on
+
+* `rows`: An `integer` that holds the number of rows in the matrix
+* `cols`: An `integer` that hold sthe number of columns in the matrix
+* `data_type`: A `DataType` enum that tells what data type is stored in the matrix
+* `**data`: A `MatrixElement` that holds the actual data stored in the matrix cells
+
 ### Functions List
-| Function Name       | Parameters | Return | Special Notes |
+
+
+| Function Name       | Return | Parameters | Special Notes |
 |---------------------|----------|----------| ---------|
-| createMatrix        | `int`: rows `int`: cols `DataType`: data_type | Row1Col3 | 
+| createMatrix        | `Matrix` | `int rows, int cols, DataType data_type` | Row1Col3 | 
 | printMatrix         | Row2Col2 | Row2Col3 |
 | getMatrixDimensions | Row3Col2 | Row3Col3 |
 | setMatrixElement    | Row3Col2 | Row3Col3 |
