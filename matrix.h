@@ -1,11 +1,6 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-// Choose row or column major order here. 
-// One of these MUST be uncommented.
-#define ROW_MAJOR_ORDER
-//#define COLUMN_MAJOR_ORDER
-
 // An enum that allows us to specify the type of data our matrix will be filled with.
 typedef enum {
     INT,
