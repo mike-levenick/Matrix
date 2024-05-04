@@ -76,7 +76,7 @@ freeMatrix(&matResult);
 ### Functions List
 | Function Name       | Parameters | Return | Special Notes |
 |---------------------|----------|----------| ---------|
-| createMatrix        | `int`: rows `int`: cols | Row1Col3 | 
+| createMatrix        | `int`: rows `int`: cols `DataType`: data_type | Row1Col3 | 
 | printMatrix         | Row2Col2 | Row2Col3 |
 | getMatrixDimensions | Row3Col2 | Row3Col3 |
 | setMatrixElement    | Row3Col2 | Row3Col3 |
